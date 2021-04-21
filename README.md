@@ -18,3 +18,7 @@
 * [ ] 수신된 카톡 읽기
 * [ ] 카톡 응답 전송
 * [ ] Scriptable AI (with luaj)
+
+# 필요 라이브러리
+* [jsoup](https://jsoup.org/) - MIT License
+* [luaj](http://www.luaj.org/luaj/3.0/README.html) - MIT License
