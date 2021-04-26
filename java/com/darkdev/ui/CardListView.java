@@ -37,7 +37,7 @@ public class CardListView extends LinearLayout {
         TextView txt = new TextView(ctx);
         txt.setText(title);
         txt.setTextColor(Color.WHITE);
-        txt.setBackgroundColor(Color.argb(110, 0, 0, 0));
+        txt.setBackgroundColor(Color.parseColor("#4FC3F7"));
         txt.setTextSize(21);
         txt.setPadding(pad, pad, pad, pad);
         addView(txt, 0);
