@@ -1,4 +1,4 @@
-package com.darkdev.ui;
+package com.darkdev.uilib;
 
 import android.content.Context;
 import android.graphics.Color;
