@@ -3,7 +3,9 @@ package com.darkdev.ki;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,7 +16,6 @@ import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.view.Gravity;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
@@ -26,12 +27,15 @@ public class MainService extends NotificationListenerService {
 
     private TextToSpeech tts;
     private Handler handler;
-    private Button btn;
+    static Button btn;
 
     @Override
     public void onCreate() {
         super.onCreate();
         handler = new Handler();
+        if (Ki.loadSettings(this, "ki_on", false)) {
+            prepareService();
+        }
     }
 
     private void runOnUiThread(Runnable runnable) {
@@ -53,17 +57,12 @@ public class MainService extends NotificationListenerService {
     private void prepareService() {
         Notification.Builder noti = Utils.createNotifation(this, Ki.NOTI_MAIN_CHANNEL, "Ki Service");
         noti.setSmallIcon(R.mipmap.ic_launcher);
-        noti.setContentTitle("Ki");
-        noti.setContentText("Ki is Running...");
+        noti.setContentTitle("Project Ki");
+        noti.setContentText("케이아이가 실행중이에요...");
         noti.setAutoCancel(true);
         noti.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0));
         startForeground(Ki.NOTI_ID_MAIN_SERVICE, noti.build());
-        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                tts.setLanguage(Locale.KOREAN);
-            }
-        });
+        tts = new TextToSpeech(this, status -> tts.setLanguage(Locale.KOREAN));
         createButton();
     }
 
@@ -80,7 +79,10 @@ public class MainService extends NotificationListenerService {
                     PixelFormat.TRANSLUCENT);
 
             btn = new Button(this);
-            btn.setText("Ki");
+            btn.setText(" ");
+            BitmapDrawable back = new BitmapDrawable(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
+            back.setAlpha(Ki.loadSettings(this, "alpha", Ki.DEFAULT_ALPHA));
+            btn.setBackgroundDrawable(back);
             btn.setOnClickListener(v -> {
                 inputVoice();
                 Utils.vibrate(this, 50);
