@@ -1,5 +1,6 @@
 package com.darkdev.ki;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -7,7 +8,9 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,10 +21,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.darkdev.ui.CardListView;
+import com.darkdev.uilib.CardListView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,23 +47,30 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("type", isChecked ? "start" : "stop");
             startService(intent);
             toast("케이아이가 " + (!isChecked ? "비" : "") + "활성화되었어요.");
-        }, false);
-        ki.addText("버튼 불투명도 설정", 0, v -> toast("test"));
+            Ki.saveSettings(this, "ki_on", isChecked);
+        }, Ki.loadSettings(this, "ki_on", false));
+        ki.addText("버튼 불투명도 설정", 0, v -> inputAlpha());
         ki.addText("명령어 목록", 0, v -> toast("test"));
         layout.addView(ki);
 
         CardListView si = new CardListView(this);
         si.setTitle("커스텀 AI 설정");
         si.addSwitch("커스텀 AI 활성화", 0, (view, isChecked) -> {
-            toast("test: " + isChecked);
-        }, false);
+            toast("커스텀 AI가 " + (!isChecked ? "비" : "") + "활성화되었어요.");
+            Ki.saveSettings(this, "ca_on", isChecked);
+        }, Ki.loadSettings(this, "ca_on", false));
         si.addText("API 목록", 0, v -> toast("test"));
         layout.addView(si);
 
         CardListView misc = new CardListView(this);
         misc.setTitle("기타 기능 & 설정");
         misc.addText("앱 정보", 0, v -> toast("test"));
-        misc.addText("깃허브", 0, v -> toast("test"));
+        misc.addText("깃허브", 0, v -> {
+            Uri uri = Uri.parse("https://github.com/DarkTornado/ProjectK");
+            Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+            toast("깃허브로 이동하고 있어요...");
+        });
         misc.addText("라이선스", 0, v -> toast("test"));
         misc.addText("오픈 소스 라이선스", 0, v -> toast("test"));
         layout.addView(misc);
@@ -69,6 +80,62 @@ public class MainActivity extends AppCompatActivity {
         ScrollView scroll = new ScrollView(this);
         scroll.addView(layout);
         setContentView(scroll);
+    }
+
+    private void inputAlpha() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("버튼 불투명도 설정");
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(1);
+
+        final TextView txt = new TextView(this);
+        txt.setText("불투명도 : " + Ki.loadSettings(this, "alpha", Ki.DEFAULT_ALPHA));
+        txt.setTextSize(18);
+        layout.addView(txt);
+
+        final BitmapDrawable back = new BitmapDrawable(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
+        back.setAlpha(Ki.loadSettings(this, "alpha", Ki.DEFAULT_ALPHA));
+
+        final SeekBar bar = new SeekBar(this);
+        bar.setMax(255);
+        bar.setProgress(Ki.loadSettings(this, "alpha", Ki.DEFAULT_ALPHA));
+        bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                txt.setText("불투명도 : " + progress);
+                back.setAlpha(progress);
+                MainService.btn.setBackgroundDrawable(back);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        layout.addView(bar);
+
+        int pad = dip2px(16);
+        layout.setPadding(pad, pad, pad, pad);
+        ScrollView scroll = new ScrollView(this);
+        scroll.addView(layout);
+
+        dialog.setView(scroll);
+        dialog.setNegativeButton("취소", (_dialog, whick)->{
+            back.setAlpha(Ki.loadSettings(this, "alpha", Ki.DEFAULT_ALPHA));
+            MainService.btn.setBackgroundDrawable(back);
+
+        });
+        dialog.setPositiveButton("확인", (_dialog, which) -> {
+            int alpha = bar.getProgress();
+            Ki.saveSettings(this, "alpha", alpha);
+            toast("불투명도가 " + alpha + "(으)로 설정되었어요.");
+        });
+        dialog.show();
     }
 
 
@@ -84,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
             if (ContextCompat.checkSelfPermission(this, per) != PackageManager.PERMISSION_GRANTED)
                 return false;
         }
-        if(!checkNotiPermission()) return false;
+        if (!checkNotiPermission()) return false;
         if (Build.VERSION.SDK_INT < 23) return true;
         return Settings.canDrawOverlays(this);
     }
@@ -100,9 +167,9 @@ public class MainActivity extends AppCompatActivity {
         layout.setOrientation(1);
         TextView txt1 = new TextView(this);
         txt1.setText(Html.fromHtml("&nbsp;<b>음성 녹음 권한</b>은 인터넷 권한과 함께 음성 인식에 사용되는거에요. 음성 인식을 위해서는 마이크를 통해 하는 말을 녹음해야겠지요?<br>" +
-                "<br>&nbsp;<b>전화 권한</b>은 말 그대로 전화를 걸 때 필요한 권한이에요.<br>"+
-                "<br>&nbsp;<b>연락처 접근 권한</b>은 사용자가 말한 이름을 연락처에서 찾아서, 그 사람의 전화번호를 알아내서 전화를 걸 때 필요한 권한이에요.<br>"+
-                "<br>&nbsp;<b>위치 권한</b>은 길 찾기 기능이 필요로 하는 권한이에요.<br>"+
+                "<br>&nbsp;<b>전화 권한</b>은 말 그대로 전화를 걸 때 필요한 권한이에요.<br>" +
+                "<br>&nbsp;<b>연락처 접근 권한</b>은 사용자가 말한 이름을 연락처에서 찾아서, 그 사람의 전화번호를 알아내서 전화를 걸 때 필요한 권한이에요.<br>" +
+                "<br>&nbsp;<b>위치 권한</b>은 길 찾기 기능이 필요로 하는 권한이에요.<br>" +
                 "<br>&nbsp;아래 버튼을 눌러서 권한을 허용해주세요. 이미 권한이 허용되어 있는 경우에는 '권한 허용하기' 버튼을 눌렀을 때 아무것도 뜨지 않을거에요.<br>"));
         txt1.setTextSize(18);
         txt1.setTextColor(Color.BLACK);
