@@ -3,6 +3,7 @@ package com.darkdev.ki;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
@@ -28,6 +29,7 @@ public class MainService extends NotificationListenerService {
     private TextToSpeech tts;
     private Handler handler;
     static Button btn;
+    private AppData[] appList;
 
     @Override
     public void onCreate() {
@@ -64,6 +66,7 @@ public class MainService extends NotificationListenerService {
         startForeground(Ki.NOTI_ID_MAIN_SERVICE, noti.build());
         tts = new TextToSpeech(this, status -> tts.setLanguage(Locale.KOREAN));
         createButton();
+        appList = Ki.getAllApps(this);
     }
 
     private void createButton() {
@@ -169,11 +172,7 @@ public class MainService extends NotificationListenerService {
                     final String que = (String) result.get(0);
                     stt.destroy();
                     toast(que);
-                    new Handler().postDelayed(new Runnable() {
-                        public void run() {
-//                            response(que);
-                        }
-                    }, 500);
+                    new Handler().postDelayed(() -> response(que), 500);
                 }
 
                 @Override
@@ -189,6 +188,22 @@ public class MainService extends NotificationListenerService {
             stt.startListening(intent);
         } catch (Exception e) {
             toast(e.toString());
+        }
+    }
+
+    private void response(String msg) {
+        if (msg.contains("실행") || msg.contains("켜") || msg.contains("키라고")) {
+            try {
+                for (AppData app : appList) {
+                    if (msg.replace(" ", "").contains(app.name.replace(" ", ""))) {
+                        PackageManager pm = getPackageManager();
+                        startActivity(pm.getLaunchIntentForPackage(app.pack));
+                        toast(app.name + " 실행중...");
+                    }
+                }
+            } catch (Exception e) {
+                toast(e.toString());
+            }
         }
     }
 
