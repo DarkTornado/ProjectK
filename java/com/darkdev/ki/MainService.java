@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +16,7 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
+import android.util.Pair;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.WindowManager;
@@ -171,7 +173,7 @@ public class MainService extends NotificationListenerService {
                     final ArrayList<String> result = (ArrayList<String>) results.get(SpeechRecognizer.RESULTS_RECOGNITION);
                     final String que = (String) result.get(0);
                     stt.destroy();
-                    toast(que);
+                    toast("입력: " + que);
                     new Handler().postDelayed(() -> response(que), 500);
                 }
 
@@ -192,18 +194,52 @@ public class MainService extends NotificationListenerService {
     }
 
     private void response(String msg) {
-        if (msg.contains("실행") || msg.contains("켜") || msg.contains("키라고")) {
-            try {
-                for (AppData app : appList) {
-                    if (msg.replace(" ", "").contains(app.name.replace(" ", ""))) {
-                        PackageManager pm = getPackageManager();
-                        startActivity(pm.getLaunchIntentForPackage(app.pack));
-                        toast(app.name + " 실행중...");
+        try {
+            String cmd = msg.split(" ")[0];
+            String data = msg.replaceFirst(cmd + " ", "");
+
+            /* 설치된 앱 실행 */
+            if (msg.contains("실행") || msg.contains("켜") || msg.contains("키라고")) {
+                try {
+                    for (AppData app : appList) {
+                        if (msg.replace(" ", "").contains(app.name.replace(" ", ""))) {
+                            PackageManager pm = getPackageManager();
+                            startActivity(pm.getLaunchIntentForPackage(app.pack));
+                            toast("[Ki] " + app.name + " 실행중...");
+                        }
                     }
+                } catch (Exception e) {
+                    toast(e.toString());
                 }
-            } catch (Exception e) {
-                toast(e.toString());
             }
+
+            /* 전화 걸기 */
+            if (msg.contains("한테 전화") || msg.contains("에게 전화")) {
+                String name;
+                if (msg.contains("한테 전화")) name = msg.split("한테 전화")[0];
+                else name = msg.split("에게 전화")[0];
+                Pair<String, String>[] contacts = Utils.getAllContacts(this);
+                if (contacts == null) {
+                    toast("[Ki] 연락처 목록을 불러오지 못했어요.");
+                } else {
+                    boolean called = false;
+                    for (Pair<String, String> contact : contacts) {
+                        if (contact.first.equals(name.trim())) {
+                            Uri uri = Uri.parse("tel:" + contact.second);
+                            Intent intent = new Intent(Intent.ACTION_CALL, uri);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            toast("[Ki] " + name + "에게 전화를 걸고 있어요.");
+                            called = true;
+                            break;
+                        }
+                    }
+                    if (!called) toast("[Ki] " + name + "(이)라는 이름으로 저장된 전화번호가 없어요.");
+                }
+            }
+
+        } catch (Exception e) {
+            toast(e.toString());
         }
     }
 
