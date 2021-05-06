@@ -7,9 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.database.Cursor;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.provider.ContactsContract;
+import android.util.Pair;
 
 import java.util.List;
 
@@ -50,4 +53,21 @@ public class Utils {
         return null;
     }
 
+    public static Pair<String, String>[] getAllContacts(Context ctx) {
+        try {
+            Cursor cursor = ctx.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
+            final Pair<String, String>[] result = new Pair[cursor.getCount()];
+            cursor.moveToFirst();
+            result[cursor.getPosition()] = new Pair(cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)),
+                    cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
+            while (cursor.moveToNext()) {
+                result[cursor.getPosition()] = new Pair(cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)),
+                        cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
+            }
+            return result;
+        } catch (Exception e) {
+//            toast("getAllContacts\n" + e.toString());
+        }
+        return null;
+    }
 }
