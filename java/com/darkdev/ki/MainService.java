@@ -66,7 +66,7 @@ public class MainService extends NotificationListenerService {
         startForeground(Ki.NOTI_ID_MAIN_SERVICE, noti.build());
         tts = new TextToSpeech(this, status -> tts.setLanguage(Locale.KOREAN));
         createButton();
-        appList = Ki.getAllApps(this);
+        appList = Utils.getAllApps(this);
     }
 
     private void createButton() {
