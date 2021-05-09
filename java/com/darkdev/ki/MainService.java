@@ -238,6 +238,16 @@ public class MainService extends NotificationListenerService {
                 }
             }
 
+            /* 검색 */
+            if (cmd.equals("검색")) {
+                Intent intent = new Intent(this, WebActivity.class);
+                intent.setData(Uri.parse("https://m.search.naver.com/search.naver?query=" + data));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                toast("[Ki] 검색 결과를 띄우고 있어요.");
+            }
+
+
         } catch (Exception e) {
             toast(e.toString());
         }
