@@ -11,6 +11,8 @@ public class Ki {
     public static final String PREFERENCES_NAME = "ki_settings";
     public static final int DEFAULT_ALPHA = 90;
 
+    public static boolean devModeEnabled = true;
+
     public static void saveData(Context ctx, String name, String value) {
         SharedPreferences sp = ctx.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
