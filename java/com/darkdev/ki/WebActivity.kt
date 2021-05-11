@@ -1,8 +1,8 @@
 package com.darkdev.ki
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.webkit.WebView
+import androidx.appcompat.app.AppCompatActivity
 
 class WebActivity : AppCompatActivity() {
 
@@ -16,6 +16,10 @@ class WebActivity : AppCompatActivity() {
         val url = intent.data.toString()
         web?.loadUrl(url)
         setContentView(web);
+    }
+
+    override fun onBackPressed() {
+        if (web!!.canGoBack()) web!!.goBack() else finish()
     }
 
 }
