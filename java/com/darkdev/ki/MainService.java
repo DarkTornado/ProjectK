@@ -32,6 +32,7 @@ public class MainService extends NotificationListenerService {
     private Handler handler;
     static Button btn;
     private AppData[] appList;
+    private LocationSaver ls;
 
     @Override
     public void onCreate() {
@@ -69,6 +70,7 @@ public class MainService extends NotificationListenerService {
         tts = new TextToSpeech(this, status -> tts.setLanguage(Locale.KOREAN));
         createButton();
         appList = Utils.getAllApps(this);
+        ls = new LocationSaver(this);
     }
 
     private void createButton() {
@@ -151,6 +153,7 @@ public class MainService extends NotificationListenerService {
 
                 @Override
                 public void onBufferReceived(byte[] buffer) {
+
                 }
 
                 @Override
@@ -195,6 +198,7 @@ public class MainService extends NotificationListenerService {
 
     private void response(String msg) {
         try {
+            if (msg.startsWith("길 찾기")) msg = msg.replaceFirst("길 찾기", "길찾기");
             String cmd = msg.split(" ")[0];
             String data = msg.replaceFirst(cmd + " ", "");
 
@@ -245,6 +249,24 @@ public class MainService extends NotificationListenerService {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 toast("[Ki] 검색 결과를 띄우고 있어요.");
+            }
+
+            /* 길찾기 */
+            if (cmd.equals("길찾기")) {
+                if (Ki.devModeEnabled) toast(ls.loc + "\n" + ls.lat + ", " + ls.lon);
+                double[] destination = LocationSaver.addr2pos(this, data);
+                if (destination == null) {
+                    toast("목적지를 찾을 수 없어요.");
+                } else {
+                    String url = "https://m.map.naver.com/directions/#/publicTransit/list/" +
+                            "현재%20위치," + ls.lon + "," + ls.lat + "," + ls.lon + "," + ls.lat + ",false,/" +
+                            "" + data + "," + destination[1] + "," + destination[0] + "," + destination[1] + "," + destination[0] + ",false,/0";
+                    Intent intent = new Intent(this, WebActivity.class);
+                    intent.setData(Uri.parse(url));
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    toast("[Ki] 길찾기 결과를 띄우고 있어요.");
+                }
             }
 
 
