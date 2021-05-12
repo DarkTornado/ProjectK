@@ -41,6 +41,9 @@
         <activity android:name=".WebActivity"
             android:label="Ki Web Broswer"
             android:configChanges="orientation|screenSize" />
+        <activity android:name=".WeatherActivity"
+            android:label="Ki Weather Info"
+            android:configChanges="orientation|screenSize" />
 
         <service
             android:name=".MainService"
