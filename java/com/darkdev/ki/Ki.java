@@ -10,6 +10,7 @@ public class Ki {
     public static final int NOTI_ID_MAIN_SERVICE = 1;
     public static final String PREFERENCES_NAME = "ki_settings";
     public static final int DEFAULT_ALPHA = 90;
+    public static final String WEATHER_API_URL = "안알랴줌";
 
     public static boolean devModeEnabled = true;
 
