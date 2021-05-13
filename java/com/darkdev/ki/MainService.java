@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.service.notification.NotificationListenerService;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
@@ -266,6 +267,26 @@ public class MainService extends NotificationListenerService {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     toast("[Ki] 길찾기 결과를 띄우고 있어요.");
+                }
+            }
+
+            /* 날씨 */
+            if (cmd.equals("날씨")) {
+                StrictMode.enableDefaults();
+                double[] location = LocationSaver.addr2pos(this, data);
+                if (location == null) {
+                    toast("해당 지역을 찾을 수 없어요.");
+                } else {
+                    String result = Utils.getWeatherInfo(this, location);
+                    if (result == null) {
+                        toast("[Ki] 날씨 정보를 불러오지 못했어요.");
+                    } else {
+                        Intent intent = new Intent(this, WeatherActivity.class);
+                        intent.putExtra("data", result);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        toast("[Ki] 날씨 정보를 불러오고 있어요.");
+                    }
                 }
             }
 

@@ -13,6 +13,7 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.provider.ContactsContract;
 import android.util.Pair;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -67,6 +68,22 @@ public class Utils {
             return result;
         } catch (Exception e) {
 //            toast("getAllContacts\n" + e.toString());
+        }
+        return null;
+    }
+
+    public static String getWeatherInfo(Context ctx, double[] pos) {
+        try {
+            String data = org.jsoup.Jsoup.connect(Ki.WEATHER_API_URL)
+                    .header("Content-Type", "application/json")
+                    .data("x", pos[0] + "")
+                    .data("y", pos[1] + "")
+                    .ignoreContentType(true)
+                    .ignoreHttpErrors(true)
+                    .post().wholeText();
+            Toast.makeText(ctx, data, Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(ctx, e.toString(), Toast.LENGTH_SHORT).show();
         }
         return null;
     }
