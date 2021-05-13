@@ -24,6 +24,7 @@
 # 필요 라이브러리
 * [jsoup](https://jsoup.org/) - MIT License
 * [luaj](http://www.luaj.org/luaj/3.0/README.html) - MIT License
+* [BottomNavigationLayout](https://github.com/DarkTornado/BottomNavigationLayout) - MIT License
 
 # 기타 관련
 * [Project Ki Back-End](https://github.com/DarkTornado/ProjectK-BackEnd) - Project K에서 사용하는 Rest API 등 구현
