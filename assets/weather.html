@@ -1,0 +1,49 @@
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='user-scalable=no width=device-width' />
+    <title>
+        날씨 정보
+    </title>
+</head>
+
+<body bgcolor=#FFFFFF style='margin:10px;'>
+    <center>
+        <img id='icon' width=80%>
+
+        <table border=0 width=90%>
+            <tr align=center>
+                <td width=20%><img width=90% src='images/status.png'></td>
+                <td id='status'>상태</td>
+            <tr align=center>
+                <td width=20%><img width=90% src='images/temp.png'></td>
+                <td id='temp'>온도</td>
+            </tr>
+            <tr align=center>
+                <td width=20%><img width=90% src='images/hum.png'></td>
+                <td id='hum'>습도</td>
+            </tr>
+            <tr align=center>
+                <td width=20%><img width=90% src='images/wind.png'></td>
+                <td id='wind'>바람</td>
+            </tr>
+            <tr align=center>
+                <td width=20%><img width=90% src='images/loc.png'></td>
+                <td id='loc'>위치</td>
+        </table>
+    </center>
+
+    <script>
+        function applyWeatherInfo(data, loc, n) {
+            document.getElementById('icon').src = data[n].icon;
+            document.getElementById('status').innerHTML = '<b>상태</b> : ' + data[n].status;
+            document.getElementById('temp').innerHTML = '<b>온도</b> : ' + data[n].temp_min + ' ~ ' + data[n].temp_max;
+            document.getElementById('hum').innerHTML = '<b>습도</b> : ' + data[n].hum;
+            document.getElementById('wind').innerHTML = '<b>바람</b> : ' + data[n].wind_dir + ', ' + data[n].wind_speed;
+            document.getElementById('loc').innerHTML = '<b>위치</b> : ' + loc;
+        }
+    </script>
+</body>
+
+</html>
