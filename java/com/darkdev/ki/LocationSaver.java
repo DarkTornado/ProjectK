@@ -14,6 +14,12 @@ public class LocationSaver {
     public double lat, lon;
     public String loc;
 
+    public LocationSaver(Address addr) {
+        lat = addr.getLatitude();
+        lon = addr.getLongitude();
+        loc = addr.getAddressLine(0);
+    }
+
     public LocationSaver(final Context ctx) {
         LocationManager lm = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
@@ -41,11 +47,11 @@ public class LocationSaver {
         }
     }
 
-    public static double[] addr2pos(Context ctx, String _addr) {
+    public static LocationSaver createWithAddress(Context ctx, String _addr) {
         try {
             Geocoder gc = new Geocoder(ctx);
             Address addr = gc.getFromLocationName(_addr, 1).get(0);
-            return new double[]{addr.getLatitude(), addr.getLongitude()};
+            return new LocationSaver(addr);
         } catch (Exception e) {
 //            Toast.makeText(ctx, "failed to find location: " + e.toString(), Toast.LENGTH_SHORT).show();
         }

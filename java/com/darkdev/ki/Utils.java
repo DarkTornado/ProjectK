@@ -72,18 +72,19 @@ public class Utils {
         return null;
     }
 
-    public static String getWeatherInfo(Context ctx, double[] pos) {
+    public static String getWeatherInfo(LocationSaver ls) {
         try {
             String data = org.jsoup.Jsoup.connect(Ki.WEATHER_API_URL)
                     .header("Content-Type", "application/json")
-                    .data("x", pos[0] + "")
-                    .data("y", pos[1] + "")
+                    .data("x", ls.lat + "")
+                    .data("y", ls.lon + "")
                     .ignoreContentType(true)
                     .ignoreHttpErrors(true)
                     .post().wholeText();
-            Toast.makeText(ctx, data, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(ctx, data, Toast.LENGTH_SHORT).show();
+            return data;
         } catch (Exception e) {
-            Toast.makeText(ctx, e.toString(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(ctx, e.toString(), Toast.LENGTH_SHORT).show();
         }
         return null;
     }

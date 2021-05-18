@@ -2,6 +2,7 @@ package com.darkdev.ki;
 
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
@@ -12,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
+import android.provider.Settings;
 import android.service.notification.NotificationListenerService;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
@@ -200,8 +202,9 @@ public class MainService extends NotificationListenerService {
     private void response(String msg) {
         try {
             if (msg.startsWith("길 찾기")) msg = msg.replaceFirst("길 찾기", "길찾기");
-            String cmd = msg.split(" ")[0];
-            String data = msg.replaceFirst(cmd + " ", "");
+            String[] cmd = msg.split(" ");
+            String data = msg.replaceFirst(cmd[0] + " ", "");
+            String data2 = msg.replaceFirst(cmd[0] + " "+cmd[1] + " ", "");
 
             /* 설치된 앱 실행 */
             if (msg.contains("실행") || msg.contains("켜") || msg.contains("키라고")) {
@@ -244,24 +247,40 @@ public class MainService extends NotificationListenerService {
             }
 
             /* 검색 */
-            if (cmd.equals("검색")) {
+            if (cmd[1].equals("검색")) {
+                String url;
+                switch (cmd[0]){
+                    case "네이버":
+                        url = "https://m.search.naver.com/search.naver?query=" + data2;
+                        break;
+                    case "구글":
+                    case "Google":
+                        url = "https://www.google.com/search?q=" + data2;
+                        break;
+                    case "다음":
+                        url = "https://search.daum.net/search?q=" + data2;
+                        break;
+                    default:
+                        url = "https://m.search.naver.com/search.naver?query=" + data2;
+                        break;
+                }
                 Intent intent = new Intent(this, WebActivity.class);
-                intent.setData(Uri.parse("https://m.search.naver.com/search.naver?query=" + data));
+                intent.setData(Uri.parse(url));
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 toast("[Ki] 검색 결과를 띄우고 있어요.");
             }
 
             /* 길찾기 */
-            if (cmd.equals("길찾기")) {
+            if (cmd[0].equals("길찾기")) {
                 if (Ki.devModeEnabled) toast(ls.loc + "\n" + ls.lat + ", " + ls.lon);
-                double[] destination = LocationSaver.addr2pos(this, data);
-                if (destination == null) {
+                LocationSaver dest = LocationSaver.createWithAddress(this, data);
+                if (dest == null) {
                     toast("목적지를 찾을 수 없어요.");
                 } else {
                     String url = "https://m.map.naver.com/directions/#/publicTransit/list/" +
                             "현재%20위치," + ls.lon + "," + ls.lat + "," + ls.lon + "," + ls.lat + ",false,/" +
-                            "" + data + "," + destination[1] + "," + destination[0] + "," + destination[1] + "," + destination[0] + ",false,/0";
+                            "" + data + "," + dest.lon + "," + dest.lat + "," + dest.lon + "," +dest.lat + ",false,/0";
                     Intent intent = new Intent(this, WebActivity.class);
                     intent.setData(Uri.parse(url));
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -271,17 +290,19 @@ public class MainService extends NotificationListenerService {
             }
 
             /* 날씨 */
-            if (cmd.equals("날씨")) {
+            if (cmd[0].equals("날씨")) {
                 StrictMode.enableDefaults();
-                double[] location = LocationSaver.addr2pos(this, data);
+                LocationSaver location = LocationSaver.createWithAddress(this, data);
                 if (location == null) {
                     toast("해당 지역을 찾을 수 없어요.");
                 } else {
-                    String result = Utils.getWeatherInfo(this, location);
+                    String result = Utils.getWeatherInfo(location);
                     if (result == null) {
                         toast("[Ki] 날씨 정보를 불러오지 못했어요.");
                     } else {
                         Intent intent = new Intent(this, WeatherActivity.class);
+                        intent.putExtra("pos", data);
+                        intent.putExtra("loc", location.loc);
                         intent.putExtra("data", result);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
