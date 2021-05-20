@@ -204,7 +204,7 @@ public class MainService extends NotificationListenerService {
             if (msg.startsWith("길 찾기")) msg = msg.replaceFirst("길 찾기", "길찾기");
             String[] cmd = msg.split(" ");
             String data = msg.replaceFirst(cmd[0] + " ", "");
-            String data2 = msg.replaceFirst(cmd[0] + " "+cmd[1] + " ", "");
+            String data2 = msg.replaceFirst(cmd[0] + " " + cmd[1] + " ", "");
 
             /* 설치된 앱 실행 */
             if (msg.contains("실행") || msg.contains("켜") || msg.contains("키라고")) {
@@ -249,7 +249,7 @@ public class MainService extends NotificationListenerService {
             /* 검색 */
             if (cmd[1].equals("검색")) {
                 String url;
-                switch (cmd[0]){
+                switch (cmd[0]) {
                     case "네이버":
                         url = "https://m.search.naver.com/search.naver?query=" + data2;
                         break;
@@ -280,7 +280,7 @@ public class MainService extends NotificationListenerService {
                 } else {
                     String url = "https://m.map.naver.com/directions/#/publicTransit/list/" +
                             "현재%20위치," + ls.lon + "," + ls.lat + "," + ls.lon + "," + ls.lat + ",false,/" +
-                            "" + data + "," + dest.lon + "," + dest.lat + "," + dest.lon + "," +dest.lat + ",false,/0";
+                            "" + data + "," + dest.lon + "," + dest.lat + "," + dest.lon + "," + dest.lat + ",false,/0";
                     Intent intent = new Intent(this, WebActivity.class);
                     intent.setData(Uri.parse(url));
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -307,6 +307,36 @@ public class MainService extends NotificationListenerService {
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                         toast("[Ki] 날씨 정보를 불러오고 있어요.");
+                    }
+                }
+            }
+
+            /* 블루투스 */
+            if (cmd[0].equals("블루투스")) {
+                BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+                if (btAdapter == null) {
+                    toast("[Ki] 이 기기는 블루투스를 지원하지 않는 기기 같아요.");
+                    return;
+                }
+                boolean btOn = btAdapter.isEnabled();
+                if (data.equals("설정")) {
+                    Intent intent = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
+                    intent.addFlags(intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    toast("[Ki] 블루투스 설정창으로 이동하고 있어요");
+                } else if (data.equals("꺼")) {
+                    if (btOn) {
+                        btAdapter.disable();
+                        toast("[Ki] 블루투스를 껐어요.");
+                    } else {
+                        toast("[Ki] 이미 블루투스가 꺼진 상태에요.");
+                    }
+                } else {
+                    if (!btOn) {
+                        btAdapter.enable();
+                        toast("[Ki] 블루투스를 켰어요.");
+                    } else {
+                        toast("[Ki] 이미 블루투스가 켜진 상태에요.");
                     }
                 }
             }
