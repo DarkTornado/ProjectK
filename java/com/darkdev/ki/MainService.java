@@ -248,6 +248,10 @@ public class MainService extends NotificationListenerService {
 
             /* 검색 */
             if (cmd[1].equals("검색")) {
+                String _custom = Ki.readData(this, "search_engine");
+                String[] custom;
+                if (_custom == null) custom = new String[]{"", "", ""};
+                else custom = _custom.split("\n");
                 String url;
                 switch (cmd[0]) {
                     case "네이버":
@@ -261,7 +265,11 @@ public class MainService extends NotificationListenerService {
                         url = "https://search.daum.net/search?q=" + data2;
                         break;
                     default:
-                        url = "https://m.search.naver.com/search.naver?query=" + data2;
+                        if (cmd[0].equals(custom[0])) {
+                            url = custom[1].replace("KEY_WORD", data2);
+                        } else {
+                            url = "https://m.search.naver.com/search.naver?query=" + data2;
+                        }
                         break;
                 }
                 Intent intent = new Intent(this, WebActivity.class);
@@ -349,12 +357,7 @@ public class MainService extends NotificationListenerService {
 
 
     private void toast(final String msg) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(MainService.this, msg, Toast.LENGTH_SHORT).show();
-            }
-        });
+        runOnUiThread(() -> Toast.makeText(MainService.this, msg, Toast.LENGTH_SHORT).show());
     }
 
     public int dip2px(int dips) {

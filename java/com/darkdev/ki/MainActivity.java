@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
@@ -19,6 +20,7 @@ import android.text.Html;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
@@ -26,6 +28,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.darkdev.uilib.CardListView;
+
+import java.net.URLDecoder;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,8 +54,18 @@ public class MainActivity extends AppCompatActivity {
             Ki.saveSettings(this, "ki_on", isChecked);
         }, Ki.loadSettings(this, "ki_on", false));
         ki.addText("버튼 불투명도 설정", 0, v -> inputAlpha());
-        ki.addText("명령어 목록", 0, v -> toast("test"));
+        ki.addText("명령어 목록", 0, v -> {
+
+        });
         layout.addView(ki);
+        ki.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Ki.devModeEnabled = !Ki.devModeEnabled;
+                toast("개발자모드: " + Ki.devModeEnabled);
+                return true;
+            }
+        });
 
         CardListView si = new CardListView(this);
         si.setTitle("커스텀 AI 설정");
@@ -59,11 +73,14 @@ public class MainActivity extends AppCompatActivity {
             toast("커스텀 AI가 " + (!isChecked ? "비" : "") + "활성화되었어요.");
             Ki.saveSettings(this, "ca_on", isChecked);
         }, Ki.loadSettings(this, "ca_on", false));
-        si.addText("API 목록", 0, v -> toast("test"));
+        si.addText("API 목록", 0, v -> {
+
+        });
         layout.addView(si);
 
         CardListView misc = new CardListView(this);
         misc.setTitle("기타 기능 & 설정");
+        misc.addText("검색 엔진 설정", 0, v -> searchEngineSettings());
         misc.addText("앱 정보", 0, v -> toast("test"));
         misc.addText("깃허브", 0, v -> {
             Uri uri = Uri.parse("https://github.com/DarkTornado/ProjectK");
@@ -81,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         scroll.addView(layout);
         setContentView(scroll);
     }
+
 
     private void inputAlpha() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
@@ -125,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         scroll.addView(layout);
 
         dialog.setView(scroll);
-        dialog.setNegativeButton("취소", (_dialog, whick)->{
+        dialog.setNegativeButton("취소", (_dialog, whick) -> {
             back.setAlpha(Ki.loadSettings(this, "alpha", Ki.DEFAULT_ALPHA));
             MainService.btn.setBackgroundDrawable(back);
 
@@ -134,6 +152,50 @@ public class MainActivity extends AppCompatActivity {
             int alpha = bar.getProgress();
             Ki.saveSettings(this, "alpha", alpha);
             toast("불투명도가 " + alpha + "(으)로 설정되었어요.");
+        });
+        dialog.show();
+    }
+
+    private void searchEngineSettings() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("검색 엔진 설정");
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(1);
+
+        TextView txt1 = new TextView(this);
+        txt1.setText("이름 : ");
+        txt1.setTextSize(18);
+        layout.addView(txt1);
+        final EditText txt2 = new EditText(this);
+        txt2.setHint("이름 입력...");
+        layout.addView(txt2);
+
+        TextView txt3 = new TextView(this);
+        txt3.setText("주소 : ");
+        txt3.setTextSize(18);
+        layout.addView(txt3);
+        final EditText txt4 = new EditText(this);
+        txt4.setHint("'KEY_WORD'를 검색한 내용 입력...");
+        layout.addView(txt4);
+
+        String _custom = Ki.readData(this, "search_engine");
+        if (_custom != null) {
+            String[] custom = _custom.split("\n");
+            txt2.setText(custom[0]);
+            txt4.setText(custom[1]);
+        }
+
+        int pad = dip2px(16);
+        layout.setPadding(pad, pad, pad, pad);
+        ScrollView scroll = new ScrollView(this);
+        scroll.addView(layout);
+        dialog.setView(scroll);
+        dialog.setNegativeButton("취소", null);
+        dialog.setPositiveButton("확인", (_dialog, which) -> {
+            String name = txt2.getText().toString();
+            String url = URLDecoder.decode(txt4.getText().toString());
+            Ki.saveData(this, "search_engine", name + "\n" + url);
+            toast("저장되었습니다.");
         });
         dialog.show();
     }
