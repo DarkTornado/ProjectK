@@ -299,23 +299,24 @@ public class MainService extends NotificationListenerService {
 
             /* 날씨 */
             if (cmd[0].equals("날씨")) {
-                StrictMode.enableDefaults();
                 LocationSaver location = LocationSaver.createWithAddress(this, data);
                 if (location == null) {
                     toast("해당 지역을 찾을 수 없어요.");
                 } else {
-                    String result = Utils.getWeatherInfo(location);
-                    if (result == null) {
-                        toast("[Ki] 날씨 정보를 불러오지 못했어요.");
-                    } else {
-                        Intent intent = new Intent(this, WeatherActivity.class);
-                        intent.putExtra("pos", data);
-                        intent.putExtra("loc", location.loc);
-                        intent.putExtra("data", result);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                        toast("[Ki] 날씨 정보를 불러오고 있어요.");
-                    }
+                    new Thread(() -> {
+                        String result = Utils.getWeatherInfo(location);
+                        if (result == null) {
+                            toast("[Ki] 날씨 정보를 불러오지 못했어요.");
+                        } else {
+                            Intent intent = new Intent(this, WeatherActivity.class);
+                            intent.putExtra("pos", data);
+                            intent.putExtra("loc", location.loc);
+                            intent.putExtra("data", result);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            toast("[Ki] 날씨 정보를 불러오고 있어요.");
+                        }
+                    }).start();
                 }
             }
 
@@ -347,6 +348,24 @@ public class MainService extends NotificationListenerService {
                         toast("[Ki] 이미 블루투스가 켜진 상태에요.");
                     }
                 }
+            }
+
+            /* 버스 */
+            if (cmd[0].equals("버스")) {
+                new Thread(() -> {
+                    String busId = Utils.getBusId(this, data);
+                    if (busId == null) {
+                        toast("[Ki] 해당 버스를 찾기 못했어요.");
+                    } else {
+                        Intent intent = new Intent(this, BusActivity.class);
+                        intent.putExtra("bus", data);
+                        intent.putExtra("busId", busId);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        toast("[Ki] 버스 운행 정보를 불러오고 있어요.");
+                    }
+
+                }).start();
             }
 
 

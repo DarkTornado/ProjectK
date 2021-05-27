@@ -15,6 +15,9 @@ import android.provider.ContactsContract;
 import android.util.Pair;
 import android.widget.Toast;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 import java.util.List;
 
 public class Utils {
@@ -74,7 +77,7 @@ public class Utils {
 
     public static String getWeatherInfo(LocationSaver ls) {
         try {
-            String data = org.jsoup.Jsoup.connect(Ki.WEATHER_API_URL)
+            String data = Jsoup.connect(Ki.WEATHER_API_URL)
                     .header("Content-Type", "application/json")
                     .data("x", ls.lat + "")
                     .data("y", ls.lon + "")
@@ -88,4 +91,18 @@ public class Utils {
         }
         return null;
     }
+
+    public static String getBusId(Context ctx, String input) {
+        try {
+            String url = "https://m.map.kakao.com/actions/searchView?q=" + input.replace(" ", "%20") + "%20버스";
+            Document data = Jsoup.connect(url).ignoreContentType(true).get();
+            String busId = data.select("div.search_result_wrap").select("li").get(0).attr("data-id");
+            if(busId.equals("")) return null;
+            return busId;
+        }catch (Exception e){
+            if(Ki.devModeEnabled) Toast.makeText(ctx, e.toString(), Toast.LENGTH_SHORT).show();
+            return null;
+        }
+    }
+
 }
