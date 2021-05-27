@@ -13,12 +13,13 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    
+
     <queries>
         <intent>
             <action android:name="android.speech.RecognitionService" />
         </intent>
     </queries>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -39,10 +40,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".WebActivity"
-            android:label="Ki Web Broswer"
+            android:label="Ki Web Browser"
             android:configChanges="orientation|screenSize" />
         <activity android:name=".WeatherActivity"
             android:label="Ki Weather Info"
+            android:configChanges="orientation|screenSize" />
+        <activity android:name=".BusActivity"
+            android:label="Ki Bus Info"
             android:configChanges="orientation|screenSize" />
 
         <service
