@@ -48,6 +48,9 @@
         <activity android:name=".BusActivity"
             android:label="Ki Bus Info"
             android:configChanges="orientation|screenSize" />
+        <activity android:name=".MetroActivity"
+            android:label="Ki Metro Map"
+            android:configChanges="orientation|screenSize" />
 
         <service
             android:name=".MainService"
