@@ -364,10 +364,8 @@ public class MainService extends NotificationListenerService {
                         startActivity(intent);
                         toast("[Ki] 버스 운행 정보를 불러오고 있어요.");
                     }
-
                 }).start();
             }
-
 
         } catch (Exception e) {
             toast(e.toString());
