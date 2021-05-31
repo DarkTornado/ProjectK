@@ -1,12 +1,15 @@
 package com.darkdev.ki
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
+import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class SubwayActivity : AppCompatActivity() {
@@ -37,6 +40,7 @@ class SubwayActivity : AppCompatActivity() {
         web!!.webChromeClient = WebChromeClient()
         web!!.webViewClient = WebViewClient()
         web!!.setInitialScale(100)
+        web!!.addJavascriptInterface(JSLinker(this), "android")
 
         val webSettings = web!!.settings
         webSettings.useWideViewPort = true
@@ -46,11 +50,34 @@ class SubwayActivity : AppCompatActivity() {
         webSettings.displayZoomControls = false
         webSettings.setSupportZoom(true)
 
-        setContentView(web!!)
+        setContentView(web)
     }
 
-    fun toast(msg: String) = Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+    fun openStationMenu(data: String?) {
+        val intent = Intent(this, WebActivity::class.java)
+        intent.data = Uri.parse("https://m.search.naver.com/search.naver?query=" + data + "역 전철 시간표")
+        intent.putExtra("title", data+"역 전철 시간표")
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+    }
 
-    fun dip2px(dips: Int) = Math.ceil(dips * this.resources.displayMetrics.density.toDouble()).toInt()
+    private class JSLinker(private val act: SubwayActivity) {
+        @JavascriptInterface
+        fun stationInfo(msg: String?, pos: Int) {
+            Handler().post {
+                var data = msg;
+                if (pos == 1) {
+                    when (msg) {
+                        "신촌(지하)" -> data = "2호선 신촌"
+                        "신촌" -> data = "경의중앙선 신촌"
+                        "양평(KTX)" -> data = "경의중앙선 양평"
+                        "평택지제" -> data = "지제"
+                        "시우" -> data = "원곡"
+                    }
+                }
+                act.openStationMenu(data)
+            }
+        }
+    }
 
 }
