@@ -33,7 +33,7 @@ class BusActivity : AppCompatActivity() {
             }
         }
         web?.settings?.javaScriptEnabled = true
-        setContentView(web);
+        setContentView(web)
     }
 
     fun startBusInfo(busId: String) {
@@ -71,7 +71,7 @@ class BusActivity : AppCompatActivity() {
             val stopId = list.get(n).select("span.txt_route").get(0).ownText().trim()
             if (stopId == "미정차") name = "<font color=#9E9E9E>$name <small>(미정차)</small></font>"
             else name = "$name <font color=#9E9E9E><small>($stopId)</small></font>"
-            busStopList!![n] = name;
+            busStopList!![n] = name
         }
     }
 
