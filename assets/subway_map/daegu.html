@@ -7,108 +7,20 @@
     <title>
         SubwayMap
     </title>
+    <script src="./script.js"></script>
 </head>
 
 <body bgcolor=#FFFFFF style="margin:0px;">
-<div style="position: relative; z-index: 1;">
-    <img src="./images/daegu.png">
-</div>
-<div style="position: relative;top: -2000px; z-index: 2;">
-    <svg width="1200" height="2000" viewBox="0 0 1200 2000">
-        <!--1호선-->
-        <circle cx="1032" cy="193" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('안심', 4);" />
-        <circle cx="978" cy="193" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('각산', 4);" />
-        <circle cx="912" cy="193" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('반야월', 4);" />
-        <circle cx="832" cy="196" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('신기', 4);" />
-        <circle cx="770" cy="245" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('율하', 4);" />
-        <circle cx="721" cy="294" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('용계', 4);" />
-        <circle cx="677" cy="340" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('방촌', 4);" />
-        <circle cx="626" cy="389" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('해안', 4);" />
-        <circle cx="579" cy="457" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('동촌', 4);" />
-        <circle cx="579" cy="516" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('아양교', 4);" />
-        <circle cx="579" cy="583" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('동구청', 4);" />
-        <circle cx="579" cy="645" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('동대구역', 4);" />
-        <circle cx="579" cy="706" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('신천', 4);" />
-        <circle cx="579" cy="766" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('칠성시장', 4);" />
-        <circle cx="579" cy="834" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('대구역', 4);" />
-        <circle cx="579" cy="898" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('중앙로', 4);" />
-        <circle cx="579" cy="967" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('반월당', 4);" />
-        <circle cx="579" cy="1085" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('남산', 4);" />
-        <circle cx="530" cy="1138" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('교대', 4);" />
-        <circle cx="482" cy="1185" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('영대병원', 4);" />
-        <circle cx="434" cy="1233" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('현충로', 4);" />
-        <circle cx="383" cy="1285" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('안지랑', 4);" />
-        <circle cx="361" cy="1331" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('대명', 4);" />
-        <circle cx="361" cy="1390" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('서부정류장', 4);" />
-        <circle cx="361" cy="1450" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('송현', 4);" />
-        <circle cx="361" cy="1508" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('월촌', 4);" />
-        <circle cx="361" cy="1567" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('상인', 4);" />
-        <circle cx="361" cy="1625" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('월배', 4);" />
-        <circle cx="361" cy="1686" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('진천', 4);" />
-        <circle cx="361" cy="1742" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('대곡', 4);" />
-        <circle cx="361" cy="1803" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('화원', 4);" />
-        <circle cx="361" cy="1864" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('설화명곡', 4);" />
-        <!--2호선-->
-        <circle cx="92" cy="266" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('문양', 4);" />
-        <circle cx="92" cy="328" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('다사', 4);" />
-        <circle cx="92" cy="391" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('대실', 4);" />
-        <circle cx="92" cy="458" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('강창', 4);" />
-        <circle cx="92" cy="521" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('계명대', 4);" />
-        <circle cx="92" cy="583" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('성서산업단지', 4);" />
-        <circle cx="92" cy="648" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('이곡', 4);" />
-        <circle cx="92" cy="714" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('용산', 4);" />
-        <circle cx="92" cy="776" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('죽전', 4);" />
-        <circle cx="92" cy="842" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('감삼', 4);" />
-        <circle cx="154" cy="914" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('두류', 4);" />
-        <circle cx="226" cy="967" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('내당', 4);" />
-        <circle cx="317" cy="967" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('반고개', 4);" />
-        <circle cx="462" cy="967" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('청라언덕', 4);" />
-        <circle cx="766" cy="967" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('경대경원', 4);" />
-        <circle cx="864" cy="1000" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('대구은행', 4);" />
-        <circle cx="930" cy="1066" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('범어', 4);" />
-        <circle cx="946" cy="1113" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('수성구청', 4);" />
-        <circle cx="946" cy="1176" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('만촌', 4);" />
-        <circle cx="946" cy="1238" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('담티', 4);" />
-        <circle cx="946" cy="1295" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('연호', 4);" />
-        <circle cx="946" cy="1355" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('대공원', 4);" />
-        <circle cx="946" cy="1415" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('고산', 4);" />
-        <circle cx="946" cy="1472" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('신매', 4);" />
-        <circle cx="946" cy="1530" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('사월', 4);" />
-        <circle cx="946" cy="1590" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('정평', 4);" />
-        <circle cx="946" cy="1650" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('임당', 4);" />
-        <circle cx="946" cy="1709" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('영남대', 4);" />
-        <!--3호선-->
-        <circle cx="352" cy="266" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('칠곡경대경원', 4);" />
-        <circle cx="352" cy="321" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('학정', 4);" />
-        <circle cx="352" cy="361" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('팔거', 4);" />
-        <circle cx="352" cy="399" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('동천', 4);" />
-        <circle cx="352" cy="439" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('칠곡운암', 4);" />
-        <circle cx="352" cy="474" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('구암', 4);" />
-        <circle cx="352" cy="509" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('태전', 4);" />
-        <circle cx="352" cy="551" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('매천', 4);" />
-        <circle cx="352" cy="588" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('매천시장', 4);" />
-        <circle cx="352" cy="626" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('팔달', 4);" />
-        <circle cx="352" cy="663" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('공단', 4);" />
-        <circle cx="352" cy="701" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('만평', 4);" />
-        <circle cx="352" cy="739" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('팔달시장', 4);" />
-        <circle cx="352" cy="780" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('원대', 4);" />
-        <circle cx="352" cy="818" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('북구청', 4);" />
-        <circle cx="355" cy="853" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('달성공원', 4);" />
-        <circle cx="409" cy="915" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('서문시장', 4);" />
-        <circle cx="525" cy="1031" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('명덕', 4);" />
-        <circle cx="651" cy="1157" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('건들바위', 4);" />
-        <circle cx="717" cy="1223" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('대봉교', 4);" />
-        <circle cx="732" cy="1283" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('수성시장', 4);" />
-        <circle cx="732" cy="1347" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('수성구민운동장', 4);" />
-        <circle cx="732" cy="1412" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('어린이회관', 4);" />
-        <circle cx="732" cy="1470" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('황금', 4);" />
-        <circle cx="732" cy="1535" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('수성못', 4);" />
-        <circle cx="732" cy="1597" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('지산', 4);" />
-        <circle cx="732" cy="1662" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('범물', 4);" />
-        <circle cx="732" cy="1727" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('용지', 4);" />
-
-    </svg>
-</div>
+    <div style="position: relative; z-index: 1;">
+        <img src="./images/daegu.png">
+    </div>
+    <div style="position: relative;top: -2000px; z-index: 2;">
+        <svg width="1200" height="2000" viewBox="0 0 1200 2000" id='stations'>
+        </svg>
+    </div>
+    <script>
+        loadStations(4);
+    </script>
 </body>
 
 </html>

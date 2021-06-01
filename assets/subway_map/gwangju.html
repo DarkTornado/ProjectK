@@ -10,35 +10,42 @@
 </head>
 
 <body bgcolor=#FFFFFF style="margin:0px;">
-<div style="position: relative; z-index: 1;">
-    <img src="./images/gwangju.png">
-</div>
-<div style="position: relative;top: -1400; z-index: 2;">
-    <svg width="800" height="1400" viewBox="0 0 800 1400">
-        <!--1호선-->
-        <circle cx="103" cy="1228" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('평동', 5);" />
-        <circle cx="103" cy="1108" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('도산', 5);" />
-        <circle cx="103" cy="990" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('광주송정', 5);" />
-        <circle cx="103" cy="876" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('송정공원', 5);" />
-        <circle cx="103" cy="756" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('공항', 5);" />
-        <circle cx="103" cy="638" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('김대중컨벤션센터', 5);" />
-        <circle cx="103" cy="522" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('상무', 5);" />
-        <circle cx="103" cy="403" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('운천', 5);" />
-        <circle cx="103" cy="284" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('쌍촌', 5);" />
-        <circle cx="285" cy="173" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('화정', 5);" />
-        <circle cx="518" cy="173" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('농성', 5);" />
-        <circle cx="697" cy="284" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('돌고개', 5);" />
-        <circle cx="697" cy="403" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('양동시장', 5);" />
-        <circle cx="697" cy="522" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('금남로5가', 5);" />
-        <circle cx="697" cy="638" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('금남로4가', 5);" />
-        <circle cx="697" cy="756" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('문화전당', 5);" />
-        <circle cx="697" cy="876" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('남광주', 5);" />
-        <circle cx="697" cy="990" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('학동·중심사입구', 5);" />
-        <circle cx="697" cy="1108" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('소태', 5);" />
-        <circle cx="697" cy="1228" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('녹동', 5);" />
-
-    </svg>
-</div>
+    <div style="position: relative; z-index: 1;">
+        <img src="./images/gwangju.png">
+    </div>
+    <div style="position: relative;top: -1400; z-index: 2;">
+        <svg width="800" height="1400" viewBox="0 0 800 1400" id='stations'>
+        </svg>
+    </div>
+    <script>
+        var data = [
+            /* 1호선 */
+            [103, 1228, '평동'],
+            [103, 1108, '도산'],
+            [103, 990, '광주송정'],
+            [103, 876, '송정공원'],
+            [103, 756, '공항'],
+            [103, 638, '김대중컨벤션센터'],
+            [103, 522, '상무'],
+            [103, 403, '운천'],
+            [103, 284, '쌍촌'],
+            [285, 173, '화정'],
+            [518, 173, '농성'],
+            [697, 284, '돌고개'],
+            [697, 403, '양동시장'],
+            [697, 522, '금남로5가'],
+            [697, 638, '금남로4가'],
+            [697, 756, '문화전당'],
+            [697, 876, '남광주'],
+            [697, 990, '학동·중심사입구'],
+            [697, 1108, '소태'],
+            [697, 1228, '녹동']
+        ];
+        var map = document.getElementById('stations');
+        for (var n = 0; n < data.length; n++) {
+            map.innerHTML += '<circle cx="' + data[n][0] + '" cy="' + data[n][1] + '" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo(\'' + data[n][2] + '\', 3);" />';
+        }
+    </script>
 </body>
 
 </html>

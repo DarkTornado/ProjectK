@@ -10,37 +10,44 @@
 </head>
 
 <body bgcolor=#FFFFFF style="margin:0px;">
-<div style="position: relative; z-index: 1;">
-    <img src="./images/daejeon.png">
-</div>
-<div style="position: relative;top: -1900; z-index: 2;">
-    <svg width="1100" height="1900" viewBox="0 0 1100 1900">
-        <!--1호선-->
-        <circle cx="877" cy="1755" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('판암', 3);" />
-        <circle cx="877" cy="1592" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('신흥', 3);" />
-        <circle cx="877" cy="1433" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('대동', 3);" />
-        <circle cx="877" cy="1269" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('대전역', 3);" />
-        <circle cx="877" cy="1111" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('중앙로', 3);" />
-        <circle cx="877" cy="951" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('중구청', 3);" />
-        <circle cx="877" cy="792" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('서대전네거리', 3);" />
-        <circle cx="877" cy="633" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('오룡', 3);" />
-        <circle cx="877" cy="480" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('용문', 3);" />
-        <circle cx="877" cy="333" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('탄방', 3);" />
-        <circle cx="877" cy="194" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('시청', 3);" />
-        <circle cx="252" cy="194" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('정부청사', 3);" />
-        <circle cx="252" cy="333" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('갈마', 3);" />
-        <circle cx="252" cy="480" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('월평', 3);" />
-        <circle cx="252" cy="633" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('갑천', 3);" />
-        <circle cx="252" cy="792" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('유성온천', 3);" />
-        <circle cx="252" cy="951" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('구암', 3);" />
-        <circle cx="252" cy="1111" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('현충원', 3);" />
-        <circle cx="252" cy="1269" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('월드컵경기장', 3);" />
-        <circle cx="252" cy="1433" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('노은', 3);" />
-        <circle cx="252" cy="1592" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('지족', 3);" />
-        <circle cx="252" cy="1755" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo('반석', 3);" />
-
-    </svg>
-</div>
+    <div style="position: relative; z-index: 1;">
+        <img src="./images/daejeon.png">
+    </div>
+    <div style="position: relative;top: -1900; z-index: 2;">
+        <svg width="1100" height="1900" viewBox="0 0 1100 1900" id='stations'>
+        </svg>
+    </div>
+    <script>
+        var data = [
+            /* 1호선 */
+            [877, 1755, '판암'],
+            [877, 1592, '신흥'],
+            [877, 1433, '대동'],
+            [877, 1269, '대전역'],
+            [877, 1111, '중앙로'],
+            [877, 951, '중구청'],
+            [877, 792, '서대전네거리'],
+            [877, 633, '오룡'],
+            [877, 480, '용문'],
+            [877, 333, '탄방'],
+            [877, 194, '시청'],
+            [252, 194, '정부청사'],
+            [252, 333, '갈마'],
+            [252, 480, '월평'],
+            [252, 633, '갑천'],
+            [252, 792, '유성온천'],
+            [252, 951, '구암'],
+            [252, 1111, '현충원'],
+            [252, 1269, '월드컵경기장'],
+            [252, 1433, '노은'],
+            [252, 1592, '지족'],
+            [252, 1755, '반석']
+        ];
+        var map = document.getElementById('stations');
+        for (var n = 0; n < data.length; n++) {
+            map.innerHTML += '<circle cx="' + data[n][0] + '" cy="' + data[n][1] + '" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo(\'' + data[n][2] + '\', 3);" />';
+        }
+    </script>
 </body>
 
-</html>
+</html>	
