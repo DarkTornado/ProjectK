@@ -71,7 +71,7 @@ class BusActivity : AppCompatActivity() {
             val stopId = list.get(n).select("span.txt_route").get(0).ownText().trim()
             if (stopId == "미정차") name = "<font color=#9E9E9E>$name <small>(미정차)</small></font>"
             else name = "$name <font color=#9E9E9E><small>($stopId)</small></font>"
-            busStopList!![n] = name
+            busStopList!![n] = name;
         }
     }
 
@@ -86,17 +86,16 @@ class BusActivity : AppCompatActivity() {
             busList[n] = pos.toInt() - 2
         }
 
-        val icons = "↓◆".toCharArray()
         val result = StringBuilder()
         for (n in 0 until busStopList!!.size) {
-            var index = 0
+            var icon = "↓";
             for (bus in busList) {
                 if (bus == n) {
-                    index = 1
+                    icon = "<i class=\"material-icons\">&#xE530;</i>"
                     break
                 }
             }
-            result.append("<tr><td align=center>" + icons[index] + "</td>")
+            result.append("<tr><td align=center>" + icon + "</td>")
             result.append("<td>" + busStopList!![n] + "</td></tr>")
         }
 
