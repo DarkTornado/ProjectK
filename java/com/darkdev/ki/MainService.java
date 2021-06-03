@@ -367,6 +367,14 @@ public class MainService extends NotificationListenerService {
                 }).start();
             }
 
+            /* 전철 노선도 */
+            if (cmd[0].equals("노선도") || cmd[1].equals("노선도")) {
+                Intent intent = new Intent(this, SubwayActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                toast("[Ki] 노선도를 띄우고 있어요.");
+            }
+            
         } catch (Exception e) {
             toast(e.toString());
         }
