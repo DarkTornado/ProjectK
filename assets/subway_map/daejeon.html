@@ -3,10 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="user-scalable=no width=device-width" />
-    <meta name="description" content="SubwayMap" />
+    <meta name="description" content="Subwa yMap" />
     <title>
         SubwayMap
     </title>
+    <script src="./script.js"></script>
 </head>
 
 <body bgcolor=#FFFFFF style="margin:0px;">
@@ -18,35 +19,7 @@
         </svg>
     </div>
     <script>
-        var data = [
-            /* 1호선 */
-            [877, 1755, '판암'],
-            [877, 1592, '신흥'],
-            [877, 1433, '대동'],
-            [877, 1269, '대전역'],
-            [877, 1111, '중앙로'],
-            [877, 951, '중구청'],
-            [877, 792, '서대전네거리'],
-            [877, 633, '오룡'],
-            [877, 480, '용문'],
-            [877, 333, '탄방'],
-            [877, 194, '시청'],
-            [252, 194, '정부청사'],
-            [252, 333, '갈마'],
-            [252, 480, '월평'],
-            [252, 633, '갑천'],
-            [252, 792, '유성온천'],
-            [252, 951, '구암'],
-            [252, 1111, '현충원'],
-            [252, 1269, '월드컵경기장'],
-            [252, 1433, '노은'],
-            [252, 1592, '지족'],
-            [252, 1755, '반석']
-        ];
-        var map = document.getElementById('stations');
-        for (var n = 0; n < data.length; n++) {
-            map.innerHTML += '<circle cx="' + data[n][0] + '" cy="' + data[n][1] + '" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo(\'' + data[n][2] + '\', 3);" />';
-        }
+        loadStations("daejeon");
     </script>
 </body>
 

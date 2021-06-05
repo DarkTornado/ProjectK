@@ -3,10 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="user-scalable=no width=device-width" />
-    <meta name="description" content="SubwayMap" />
+    <meta name="description" content="Subway Map" />
     <title>
         SubwayMap
     </title>
+    <script src="./script.js"></script>
 </head>
 
 <body bgcolor=#FFFFFF style="margin:0px;">
@@ -18,33 +19,7 @@
         </svg>
     </div>
     <script>
-        var data = [
-            /* 1호선 */
-            [103, 1228, '평동'],
-            [103, 1108, '도산'],
-            [103, 990, '광주송정'],
-            [103, 876, '송정공원'],
-            [103, 756, '공항'],
-            [103, 638, '김대중컨벤션센터'],
-            [103, 522, '상무'],
-            [103, 403, '운천'],
-            [103, 284, '쌍촌'],
-            [285, 173, '화정'],
-            [518, 173, '농성'],
-            [697, 284, '돌고개'],
-            [697, 403, '양동시장'],
-            [697, 522, '금남로5가'],
-            [697, 638, '금남로4가'],
-            [697, 756, '문화전당'],
-            [697, 876, '남광주'],
-            [697, 990, '학동·중심사입구'],
-            [697, 1108, '소태'],
-            [697, 1228, '녹동']
-        ];
-        var map = document.getElementById('stations');
-        for (var n = 0; n < data.length; n++) {
-            map.innerHTML += '<circle cx="' + data[n][0] + '" cy="' + data[n][1] + '" r="16" fill="#EEEEEE" opacity="0" onclick="window.android.stationInfo(\'' + data[n][2] + '\', 3);" />';
-        }
+        loadStations("gwangju");
     </script>
 </body>
 
