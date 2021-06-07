@@ -12,9 +12,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.StrictMode;
 import android.provider.Settings;
 import android.service.notification.NotificationListenerService;
+import android.service.notification.StatusBarNotification;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
@@ -36,6 +36,7 @@ public class MainService extends NotificationListenerService {
     static Button btn;
     private AppData[] appList;
     private LocationSaver ls;
+    private KakaoTalk chat;
 
     @Override
     public void onCreate() {
@@ -204,7 +205,8 @@ public class MainService extends NotificationListenerService {
             if (msg.startsWith("길 찾기")) msg = msg.replaceFirst("길 찾기", "길찾기");
             String[] cmd = msg.split(" ");
             String data = msg.replaceFirst(cmd[0] + " ", "");
-            String data2 = msg.replaceFirst(cmd[0] + " " + cmd[1] + " ", "");
+            String data2 = "";
+            if (cmd.length > 1) data2 = msg.replaceFirst(cmd[0] + " " + cmd[1] + " ", "");
 
             /* 설치된 앱 실행 */
             if (msg.contains("실행") || msg.contains("켜") || msg.contains("키라고")) {
@@ -213,7 +215,7 @@ public class MainService extends NotificationListenerService {
                         if (msg.replace(" ", "").contains(app.name.replace(" ", ""))) {
                             PackageManager pm = getPackageManager();
                             startActivity(pm.getLaunchIntentForPackage(app.pack));
-                            toast("[Ki] " + app.name + " 실행중...");
+                            say("" + app.name + " 실행중...");
                         }
                     }
                 } catch (Exception e) {
@@ -228,7 +230,7 @@ public class MainService extends NotificationListenerService {
                 else name = msg.split("에게 전화")[0];
                 Pair<String, String>[] contacts = Utils.getAllContacts(this);
                 if (contacts == null) {
-                    toast("[Ki] 연락처 목록을 불러오지 못했어요.");
+                    say("연락처 목록을 불러오지 못했어요.");
                 } else {
                     boolean called = false;
                     for (Pair<String, String> contact : contacts) {
@@ -237,12 +239,12 @@ public class MainService extends NotificationListenerService {
                             Intent intent = new Intent(Intent.ACTION_CALL, uri);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
-                            toast("[Ki] " + name + "에게 전화를 걸고 있어요.");
+                            say("" + name + "에게 전화를 걸고 있어요.");
                             called = true;
                             break;
                         }
                     }
-                    if (!called) toast("[Ki] " + name + "(이)라는 이름으로 저장된 전화번호가 없어요.");
+                    if (!called) say("" + name + "(이)라는 이름으로 저장된 전화번호가 없어요.");
                 }
             }
 
@@ -276,7 +278,7 @@ public class MainService extends NotificationListenerService {
                 intent.setData(Uri.parse(url));
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
-                toast("[Ki] 검색 결과를 띄우고 있어요.");
+                say("검색 결과를 띄우고 있어요.");
             }
 
             /* 길찾기 */
@@ -284,7 +286,7 @@ public class MainService extends NotificationListenerService {
                 if (Ki.devModeEnabled) toast(ls.loc + "\n" + ls.lat + ", " + ls.lon);
                 LocationSaver dest = LocationSaver.createWithAddress(this, data);
                 if (dest == null) {
-                    toast("목적지를 찾을 수 없어요.");
+                    say("목적지를 찾을 수 없어요.");
                 } else {
                     String url = "https://m.map.naver.com/directions/#/publicTransit/list/" +
                             "현재%20위치," + ls.lon + "," + ls.lat + "," + ls.lon + "," + ls.lat + ",false,/" +
@@ -293,7 +295,7 @@ public class MainService extends NotificationListenerService {
                     intent.setData(Uri.parse(url));
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
-                    toast("[Ki] 길찾기 결과를 띄우고 있어요.");
+                    say("길찾기 결과를 띄우고 있어요.");
                 }
             }
 
@@ -301,12 +303,12 @@ public class MainService extends NotificationListenerService {
             if (cmd[0].equals("날씨")) {
                 LocationSaver location = LocationSaver.createWithAddress(this, data);
                 if (location == null) {
-                    toast("해당 지역을 찾을 수 없어요.");
+                    say("해당 지역을 찾을 수 없어요.");
                 } else {
                     new Thread(() -> {
                         String result = Utils.getWeatherInfo(location);
                         if (result == null) {
-                            toast("[Ki] 날씨 정보를 불러오지 못했어요.");
+                            say("날씨 정보를 불러오지 못했어요.");
                         } else {
                             Intent intent = new Intent(this, WeatherActivity.class);
                             intent.putExtra("pos", data);
@@ -314,7 +316,7 @@ public class MainService extends NotificationListenerService {
                             intent.putExtra("data", result);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
-                            toast("[Ki] 날씨 정보를 불러오고 있어요.");
+                            say("날씨 정보를 불러오고 있어요.");
                         }
                     }).start();
                 }
@@ -324,7 +326,7 @@ public class MainService extends NotificationListenerService {
             if (cmd[0].equals("블루투스")) {
                 BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
                 if (btAdapter == null) {
-                    toast("[Ki] 이 기기는 블루투스를 지원하지 않는 기기 같아요.");
+                    say("이 기기는 블루투스를 지원하지 않는 기기 같아요.");
                     return;
                 }
                 boolean btOn = btAdapter.isEnabled();
@@ -332,20 +334,20 @@ public class MainService extends NotificationListenerService {
                     Intent intent = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
                     intent.addFlags(intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
-                    toast("[Ki] 블루투스 설정창으로 이동하고 있어요");
+                    say("블루투스 설정창으로 이동하고 있어요");
                 } else if (data.equals("꺼")) {
                     if (btOn) {
                         btAdapter.disable();
-                        toast("[Ki] 블루투스를 껐어요.");
+                        say("블루투스를 껐어요.");
                     } else {
-                        toast("[Ki] 이미 블루투스가 꺼진 상태에요.");
+                        say("이미 블루투스가 꺼진 상태에요.");
                     }
                 } else {
                     if (!btOn) {
                         btAdapter.enable();
-                        toast("[Ki] 블루투스를 켰어요.");
+                        say("블루투스를 켰어요.");
                     } else {
-                        toast("[Ki] 이미 블루투스가 켜진 상태에요.");
+                        say("이미 블루투스가 켜진 상태에요.");
                     }
                 }
             }
@@ -355,15 +357,16 @@ public class MainService extends NotificationListenerService {
                 new Thread(() -> {
                     String busId = Utils.getBusId(this, data);
                     if (busId == null) {
-                        toast("[Ki] 해당 버스를 찾기 못했어요.");
+                        say("해당 버스를 찾기 못했어요.");
                     } else {
                         Intent intent = new Intent(this, BusActivity.class);
                         intent.putExtra("bus", data);
                         intent.putExtra("busId", busId);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
-                        toast("[Ki] 버스 운행 정보를 불러오고 있어요.");
+                        say("버스 운행 정보를 불러오고 있어요.");
                     }
+
                 }).start();
             }
 
@@ -372,11 +375,48 @@ public class MainService extends NotificationListenerService {
                 Intent intent = new Intent(this, SubwayActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
-                toast("[Ki] 노선도를 띄우고 있어요.");
+                say("노선도를 띄우고 있어요.");
             }
-            
+
+            /* 카카오톡 */
+            if (cmd[0].equals("카톡") || cmd[0].equals("카카오톡")) {
+                if (data.equals("읽어 줘")) {
+                    if (chat == null) {
+                        say("케이아이가 실행된 이후에 수신된 카카오톡 메시지가 없어요.");
+                    } else {
+                        if (chat.isGroupChat) say(chat.sender + "(이)가 " + chat.msg + "(이)라고 보냈어요.");
+                        say(chat.room + "에서 " + chat.sender + "(이)가 " + chat.msg + "(이)라고 보냈어요.");
+                    }
+                } else if (cmd[1].equals("답장")) {
+                    chat.reply(data2);
+                    say(chat.room + "(으)로 " + data2 + "(이)라고 답장을 보냈어요");
+                }
+            }
+
         } catch (Exception e) {
             toast(e.toString());
+        }
+    }
+
+    private void say(String msg) {
+        toast("[Ki] " + msg);
+        tts.speak(msg, TextToSpeech.QUEUE_FLUSH, null);
+    }
+
+    @Override
+    public void onNotificationPosted(StatusBarNotification sbn) {
+        super.onNotificationPosted(sbn);
+        if (sbn.getPackageName().equals("com.kakao.talk")) {
+            Notification.WearableExtender wExt = new Notification.WearableExtender(sbn.getNotification());
+            for (Notification.Action act : wExt.getActions()) {
+                if (act.getRemoteInputs() != null && act.getRemoteInputs().length > 0) {
+                    if (act.title.toString().toLowerCase().contains("reply") ||
+                            act.title.toString().toLowerCase().contains("답장")) {
+                        Bundle data = sbn.getNotification().extras;
+                        chat = new KakaoTalk(this, data, act);
+                    }
+                }
+            }
         }
     }
 
