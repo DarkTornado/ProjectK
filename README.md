@@ -21,8 +21,8 @@
 * [x] 블루투스 제어
 * [x] 전철 노선도
 * [x] 실시간 버스 운행정보
-* [ ] 수신된 카톡 읽기
-* [ ] 카톡 응답 전송
+* [x] 수신된 카카오톡 내용 읽기
+* [x] 카카오톡 메시지가 수신된 채팅방으로 응답 전송
 * [ ] Scriptable AI (with luaj)
 
 # 필요 라이브러리
@@ -32,3 +32,4 @@
 
 # 기타 관련
 * [Project Ki Back-End](https://github.com/DarkTornado/ProjectK-BackEnd) - Project K에서 사용하는 Rest API 등 구현
+
