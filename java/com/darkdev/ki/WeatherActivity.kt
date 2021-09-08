@@ -26,42 +26,21 @@ class WeatherActivity : AppCompatActivity() {
             toast("비정상적인 실행이 감지되었어요 :(")
             finish()
         }
-        supportActionBar?.title = "날씨 : $pos"
+        supportActionBar?.hide()
 
-        val web = arrayOfNulls<WebView>(3)
-        for (n in 0..2) {
-            web[n] = WebView(this)
-            web[n]?.loadUrl("file:///android_asset/weather.html")
-            web[n]?.settings?.javaScriptEnabled = true
-            web[n]?.webChromeClient = WebChromeClient()
-            web[n]?.webViewClient = object : WebViewClient() {
+        val web = WebView(this)
+            web.loadUrl("file:///android_asset/weather.html")
+            web.settings.javaScriptEnabled = true
+            web.webChromeClient = WebChromeClient()
+            web.webViewClient = object : WebViewClient() {
                 override fun onPageFinished(view: WebView, url: String) {
-                    view.loadUrl("javascript:applyWeatherInfo($data, '$loc', $n)")
+                    view.loadUrl("javascript:applyWeatherInfo('$data', '$pos')")
                     super.onPageFinished(view, url)
                 }
             }
-            web[n]?.setBackgroundColor(Color.WHITE)
-            web[n]?.layoutParams = LinearLayout.LayoutParams(-1, -1)
-        }
+            web.layoutParams = LinearLayout.LayoutParams(-1, -1)
 
-        val layout = BottomNavigationLayout(this)
-        layout.setBackgroundColor(Color.WHITE)
-        layout.setBottomBackgroundColor(Color.parseColor("#81D4FA"))
-        layout.addView(web[0]);
-
-        layout.addBottomButton("오늘", R.drawable.today, getRipple(), {
-            layout.replace(web[0])
-        }, 12f, Color.parseColor("#01579B"))
-
-        layout.addBottomButton("내일", R.drawable.tomo, getRipple(), {
-            layout.replace(web[1])
-        }, 12f, Color.parseColor("#01579B"))
-
-        layout.addBottomButton("모래", R.drawable.tomo2, getRipple(), {
-            layout.replace(web[2])
-        }, 12f, Color.parseColor("#01579B"))
-
-        setContentView(layout)
+        setContentView(web)
     }
 
     fun getRipple(): Drawable? {

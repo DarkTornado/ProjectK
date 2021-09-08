@@ -7,41 +7,87 @@
         날씨 정보
     </title>
 </head>
+<style>
+    @font-face {
+        font-family: ChilgokFont;
+        src: url("Maplestory.ttf")
+    }
 
-<body bgcolor=#FFFFFF style='margin:10px;'>
+    body {
+        background: linear-gradient(#81D4FA, #B39DDB);
+    }
+
+    table {
+        border-spacing: 5px;
+        font-family: ChilgokFont;
+        font-size: 14pt;
+        font-weight: bold;
+    }
+
+    td {
+        background: #EEEEEE50;
+    }
+
+    td.title {
+        font-size: 18pt;
+        padding: 10px;
+    }
+
+    .current {
+        padding: 20px;
+    }
+</style>
+
+<body style='margin:20px;'>
     <center>
-        <img id='icon' width=80%>
+        <table border=0 width=100% id='current'>
+            <tr align=center>
+                <td>현재 날씨</td>
+            </tr>
+        </table>
 
-        <table border=0 width=90%>
+        <table border=0 width=100% id='weekly'>
             <tr align=center>
-                <td width=20%><img width=90% src='images/status.png'></td>
-                <td id='status'>상태</td>
-            <tr align=center>
-                <td width=20%><img width=90% src='images/temp.png'></td>
-                <td id='temp'>온도</td>
+                <td>주간 날씨</td>
             </tr>
-            <tr align=center>
-                <td width=20%><img width=90% src='images/hum.png'></td>
-                <td id='hum'>습도</td>
-            </tr>
-            <tr align=center>
-                <td width=20%><img width=90% src='images/wind.png'></td>
-                <td id='wind'>바람</td>
-            </tr>
-            <tr align=center>
-                <td width=20%><img width=90% src='images/loc.png'></td>
-                <td id='loc'>위치</td>
         </table>
     </center>
 
     <script>
-        function applyWeatherInfo(data, loc, n) {
-            document.getElementById('icon').src = data[n].icon;
-            document.getElementById('status').innerHTML = '<b>상태</b> : ' + data[n].status;
-            document.getElementById('temp').innerHTML = '<b>온도</b> : ' + data[n].temp_min + ' ~ ' + data[n].temp_max;
-            document.getElementById('hum').innerHTML = '<b>습도</b> : ' + data[n].hum;
-            document.getElementById('wind').innerHTML = '<b>바람</b> : ' + data[n].wind_dir + ', ' + data[n].wind_speed;
-            document.getElementById('loc').innerHTML = '<b>위치</b> : ' + loc;
+        function applyWeatherInfo(data, loc) {
+            try {
+                data = JSON.parse(data);
+                
+                /* 현재 날씨 */
+                var src = "<tr align=center><td colspan=2 class=title>현재 날씨</td></tr>";
+                src += "<tr align=center>";
+                src += "<td width=50% class=current><img src='./images/" + data.current.icon + "' width=60%><br>" + data.current.status + "</td>";
+                src += "<td width=50% class=current><img src='./images/loc.png' width=60%><br>" + loc + "</td>";
+                src += "</tr>";
+                src += "<tr align=center>";
+                src += "<td width=50% class=current><img src='./images/temp.png' width=60%><br>온도 " + data.current.temp + "</td>";
+                src += "<td width=50% class=current><img src='./images/temp_wind.png' width=60%><br>체감 " + data.current.temp_wind + "</td>";
+                src += "</tr>";
+                src += "<tr align=center>";
+                src += "<td width=50% class=current><img src='./images/hum.png' width=60%><br>습도 " + data.current.hum + "</td>";
+                src += "<td width=50% class=current><img src='./images/wind.png' width=60%><br>" + data.current.wind_dir + ", " + data.current.wind_speed + "</td>";
+                src += "</tr>";
+                document.getElementById('current').innerHTML = src.replace(/℃/g, "°C"); //℃에 대응되는 폰트가 없음
+
+                /* 주간 날씨 */
+                data = data.weekly;
+                var src = "<tr align=center><td colspan=3 class=title>주간 날씨</td></tr>";
+                for (var n = 0; n < data.length; n++) {
+                    src += "<tr align=center>";
+                    src += "<td width=30%>" + data[n].date + "</td>";
+                    src += "<td>" + data[n].temp_min + " ~ " + data[n].temp_max + "</td>";
+                    src += "<td width=20%><img src='./images/" + data[n].icon + "' width=60%></td>";
+                    src += "</tr>";
+                    document.getElementById('weekly').innerHTML = src.replace(/℃/g, "°C");
+                }
+            } catch (e) {
+                alert(e);
+            }
         }
     </script>
 </body>
