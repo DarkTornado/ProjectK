@@ -50,7 +50,6 @@ class SubwayActivity : AppCompatActivity() {
         webSettings.displayZoomControls = false
         webSettings.allowUniversalAccessFromFileURLs = true;
         webSettings.setSupportZoom(true)
-
         setContentView(web)
     }
 
