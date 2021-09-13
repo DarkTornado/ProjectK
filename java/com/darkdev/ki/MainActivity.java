@@ -6,7 +6,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
@@ -27,6 +26,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.darkdev.ai.ScriptActivity;
 import com.darkdev.uilib.CardListView;
 
 import java.net.URLDecoder;
@@ -54,17 +54,14 @@ public class MainActivity extends AppCompatActivity {
             Ki.saveSettings(this, "ki_on", isChecked);
         }, Ki.loadSettings(this, "ki_on", false));
         ki.addText("버튼 불투명도 설정", 0, v -> inputAlpha());
-        ki.addText("명령어 목록", 0, v -> {
+        ki.addText("명령어 목록", 1, v -> {
 
         });
         layout.addView(ki);
-        ki.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Ki.devModeEnabled = !Ki.devModeEnabled;
-                toast("개발자모드: " + Ki.devModeEnabled);
-                return true;
-            }
+        ki.setOnLongClickListener(v -> {
+            Ki.devModeEnabled = !Ki.devModeEnabled;
+            toast("개발자모드: " + Ki.devModeEnabled);
+            return true;
         });
 
         CardListView si = new CardListView(this);
@@ -73,8 +70,10 @@ public class MainActivity extends AppCompatActivity {
             toast("커스텀 AI가 " + (!isChecked ? "비" : "") + "활성화되었어요.");
             Ki.saveSettings(this, "ca_on", isChecked);
         }, Ki.loadSettings(this, "ca_on", false));
-        si.addText("API 목록", 0, v -> {
-
+        si.addText("커스텀 API 편집", 1, v -> {
+            startActivity(new Intent(this, ScriptActivity.class));
+        });
+        si.addText("API 목록", 2, v -> {
         });
         layout.addView(si);
 

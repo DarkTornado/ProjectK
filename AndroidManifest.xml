@@ -51,7 +51,8 @@
         <activity android:name=".SubwayActivity"
             android:label="Ki Subway Map"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".ScriptActivity"
+
+        <activity android:name="com.darkdev.ai.ScriptActivity"
             android:label="Scriptable AI"
             android:configChanges="orientation|screenSize" />
 
