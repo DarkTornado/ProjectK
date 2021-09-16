@@ -48,8 +48,12 @@ public class MainActivity extends AppCompatActivity {
         ki.setTitle("상시 대기 설정");
         ki.addSwitch("케이아이 활성화", 0, (view, isChecked) -> {
             Intent intent = new Intent(this, MainService.class);
-            intent.putExtra("type", isChecked ? "start" : "stop");
-            startService(intent);
+            if (isChecked) {
+                if (Build.VERSION.SDK_INT >= 26) startForegroundService(intent);
+                else startService(intent);
+            } else {
+                stopService(intent);
+            }
             toast("케이아이가 " + (!isChecked ? "비" : "") + "활성화되었어요.");
             Ki.saveSettings(this, "ki_on", isChecked);
         }, Ki.loadSettings(this, "ki_on", false));

@@ -2,6 +2,7 @@ package com.darkdev.ki;
 
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.provider.Settings;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
@@ -29,22 +31,22 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class MainService extends NotificationListenerService {
+import androidx.annotation.Nullable;
 
-    private TextToSpeech tts;
+public class MainService extends Service {
+
+    public static TextToSpeech tts;
+
     private Handler handler;
     static Button btn;
     private AppData[] appList;
     private LocationSaver ls;
-    private KakaoTalk chat;
 
     @Override
     public void onCreate() {
         super.onCreate();
         handler = new Handler();
-        if (Ki.loadSettings(this, "ki_on", false)) {
-            prepareService();
-        }
+        prepareService();
     }
 
     private void runOnUiThread(Runnable runnable) {
@@ -53,14 +55,17 @@ public class MainService extends NotificationListenerService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String type = intent.getStringExtra("type");
-        if (type.equals("start")) {
-            prepareService();
-        } else if (type.equals("stop")) {
-            stopForeground(true);
-            removeButton();
+        prepareService();
+        if (intent.getBooleanExtra("auto_started", false)) {
+            toast("자동 실행됨");
         }
         return START_NOT_STICKY;
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 
     private void prepareService() {
@@ -366,7 +371,6 @@ public class MainService extends NotificationListenerService {
                         startActivity(intent);
                         say("버스 운행 정보를 불러오고 있어요.");
                     }
-
                 }).start();
             }
 
@@ -380,6 +384,7 @@ public class MainService extends NotificationListenerService {
 
             /* 카카오톡 */
             if (cmd[0].equals("카톡") || cmd[0].equals("카카오톡")) {
+                KakaoTalk chat = KakaoTalkListener.chat;
                 if (data.equals("읽어 줘")) {
                     if (chat == null) {
                         say("케이아이가 실행된 이후에 수신된 카카오톡 메시지가 없어요.");
@@ -404,22 +409,11 @@ public class MainService extends NotificationListenerService {
     }
 
     @Override
-    public void onNotificationPosted(StatusBarNotification sbn) {
-        super.onNotificationPosted(sbn);
-        if (sbn.getPackageName().equals("com.kakao.talk")) {
-            Notification.WearableExtender wExt = new Notification.WearableExtender(sbn.getNotification());
-            for (Notification.Action act : wExt.getActions()) {
-                if (act.getRemoteInputs() != null && act.getRemoteInputs().length > 0) {
-                    if (act.title.toString().toLowerCase().contains("reply") ||
-                            act.title.toString().toLowerCase().contains("답장")) {
-                        Bundle data = sbn.getNotification().extras;
-                        chat = new KakaoTalk(this, data, act);
-                    }
-                }
-            }
-        }
+    public void onDestroy() {
+        super.onDestroy();
+        stopForeground(true);
+        removeButton();
     }
-
 
     private void toast(final String msg) {
         runOnUiThread(() -> Toast.makeText(MainService.this, msg, Toast.LENGTH_SHORT).show());
