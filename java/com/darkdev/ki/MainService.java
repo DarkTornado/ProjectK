@@ -397,6 +397,15 @@ public class MainService extends Service {
                     say(chat.room + "(으)로 " + data2 + "(이)라고 답장을 보냈어요");
                 }
             }
+            
+            /* 맛집 */
+            if (cmd[0].equals("맛집")) {
+                say("맛집 정보를 불러오고 있어요");
+                Intent intent = new Intent(this, FoodActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("input", data);
+                startActivity(intent);
+            }
 
         } catch (Exception e) {
             toast(e.toString());

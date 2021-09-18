@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -18,6 +20,9 @@ import android.widget.Toast;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import java.io.BufferedInputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 
 public class Utils {
@@ -97,12 +102,30 @@ public class Utils {
             String url = "https://m.map.kakao.com/actions/searchView?q=" + input.replace(" ", "%20") + "%20버스";
             Document data = Jsoup.connect(url).ignoreContentType(true).get();
             String busId = data.select("div.search_result_wrap").select("li").get(0).attr("data-id");
-            if(busId.equals("")) return null;
+            if (busId.equals("")) return null;
             return busId;
-        }catch (Exception e){
-            if(Ki.devModeEnabled) Toast.makeText(ctx, e.toString(), Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            if (Ki.devModeEnabled) Toast.makeText(ctx, e.toString(), Toast.LENGTH_SHORT).show();
             return null;
         }
+    }
+
+    public static Bitmap getImageFromWeb(String link) {
+        try {
+            URL url = new URL(link);
+            URLConnection con = url.openConnection();
+            if (con != null) {
+                con.setConnectTimeout(5000);
+                con.setUseCaches(false);
+                BufferedInputStream bis = new BufferedInputStream(con.getInputStream());
+                Bitmap bitmap = BitmapFactory.decodeStream(bis);
+                bis.close();
+                return bitmap;
+            }
+        } catch (Exception e) {
+            //toast(e.toString());
+        }
+        return null;
     }
 
 }

@@ -51,6 +51,9 @@
         <activity android:name=".SubwayActivity"
             android:label="Ki Subway Map"
             android:configChanges="orientation|screenSize" />
+        <activity android:name=".FoodActivity"
+            android:label="Ki - 맛집 정보"
+            android:configChanges="orientation|screenSize" />
 
         <activity android:name="com.darkdev.ai.ScriptActivity"
             android:label="Scriptable AI"
