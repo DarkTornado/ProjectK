@@ -23,14 +23,13 @@
 * [x] 실시간 버스 운행정보
 * [x] 수신된 카카오톡 내용 읽기
 * [x] 카카오톡 메시지가 수신된 채팅방으로 응답 전송
-* [ ] 맛집 정보
+* [x] 맛집 정보
 * [ ] Scriptable AI (with luaj)
 
 # 필요 라이브러리
 * [jsoup](https://jsoup.org/) - MIT License
 * [luaj](http://www.luaj.org/luaj/3.0/README.html) - MIT License
 * [BottomNavigationLayout](https://github.com/DarkTornado/BottomNavigationLayout) - MIT License
-* [Extended EditText](https://github.com/DarkTornado/Extended-EditText) - BSD-3-Clause License
 
 # 기타 관련
 * [Project Ki Back-End](https://github.com/DarkTornado/ProjectK-BackEnd) - Project K에서 사용하는 Rest API 등 구현

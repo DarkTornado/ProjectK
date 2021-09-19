@@ -28,6 +28,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.darkdev.ai.CustomAI;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -36,6 +38,7 @@ import androidx.annotation.Nullable;
 public class MainService extends Service {
 
     public static TextToSpeech tts;
+    public static CustomAI ai;
 
     private Handler handler;
     static Button btn;
@@ -80,6 +83,7 @@ public class MainService extends Service {
         createButton();
         appList = Utils.getAllApps(this);
         ls = new LocationSaver(this);
+        ai = new CustomAI(this);
     }
 
     private void createButton() {
@@ -213,6 +217,8 @@ public class MainService extends Service {
             String data2 = "";
             if (cmd.length > 1) data2 = msg.replaceFirst(cmd[0] + " " + cmd[1] + " ", "");
 
+            boolean called = false;
+
             /* 설치된 앱 실행 */
             if (msg.contains("실행") || msg.contains("켜") || msg.contains("키라고")) {
                 try {
@@ -221,6 +227,7 @@ public class MainService extends Service {
                             PackageManager pm = getPackageManager();
                             startActivity(pm.getLaunchIntentForPackage(app.pack));
                             say("" + app.name + " 실행중...");
+                            called = true;
                         }
                     }
                 } catch (Exception e) {
@@ -237,7 +244,7 @@ public class MainService extends Service {
                 if (contacts == null) {
                     say("연락처 목록을 불러오지 못했어요.");
                 } else {
-                    boolean called = false;
+                    boolean called2 = false;
                     for (Pair<String, String> contact : contacts) {
                         if (contact.first.equals(name.trim())) {
                             Uri uri = Uri.parse("tel:" + contact.second);
@@ -245,12 +252,13 @@ public class MainService extends Service {
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
                             say("" + name + "에게 전화를 걸고 있어요.");
-                            called = true;
+                            called2 = true;
                             break;
                         }
                     }
-                    if (!called) say("" + name + "(이)라는 이름으로 저장된 전화번호가 없어요.");
+                    if (!called2) say("" + name + "(이)라는 이름으로 저장된 전화번호가 없어요.");
                 }
+                called = true;
             }
 
             /* 검색 */
@@ -284,6 +292,7 @@ public class MainService extends Service {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 say("검색 결과를 띄우고 있어요.");
+                called = true;
             }
 
             /* 길찾기 */
@@ -302,6 +311,7 @@ public class MainService extends Service {
                     startActivity(intent);
                     say("길찾기 결과를 띄우고 있어요.");
                 }
+                called = true;
             }
 
             /* 날씨 */
@@ -325,6 +335,7 @@ public class MainService extends Service {
                         }
                     }).start();
                 }
+                called = true;
             }
 
             /* 블루투스 */
@@ -355,6 +366,7 @@ public class MainService extends Service {
                         say("이미 블루투스가 켜진 상태에요.");
                     }
                 }
+                called = true;
             }
 
             /* 버스 */
@@ -372,6 +384,7 @@ public class MainService extends Service {
                         say("버스 운행 정보를 불러오고 있어요.");
                     }
                 }).start();
+                called = true;
             }
 
             /* 전철 노선도 */
@@ -380,6 +393,7 @@ public class MainService extends Service {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 say("노선도를 띄우고 있어요.");
+                called = true;
             }
 
             /* 카카오톡 */
@@ -396,6 +410,7 @@ public class MainService extends Service {
                     chat.reply(data2);
                     say(chat.room + "(으)로 " + data2 + "(이)라고 답장을 보냈어요");
                 }
+                called = true;
             }
             
             /* 맛집 */
@@ -405,6 +420,12 @@ public class MainService extends Service {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("input", data);
                 startActivity(intent);
+                called = true;
+            }
+
+            /* 커스텀 AI */
+            if(Ki.loadSettings(this, "ca_on", false)) {
+                ai.callResponse(msg, called);
             }
 
         } catch (Exception e) {
