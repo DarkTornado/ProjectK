@@ -1,5 +1,8 @@
 package com.darkdev.ai
 
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.speech.tts.TextToSpeech
 import com.darkdev.ki.MainService
 import org.luaj.vm2.LuaValue
@@ -11,6 +14,14 @@ class LuaApi {
         override fun call(msg: LuaValue): LuaValue {
 //            toast("[Ki] $msg")
             MainService.tts.speak(msg.tojstring(), TextToSpeech.QUEUE_FLUSH, null)
+            return NIL
+        }
+    }
+
+    internal class RunApp : OneArgFunction() {
+        override fun call(packageName: LuaValue): LuaValue {
+            val pm: PackageManager = MainService.ctx.getPackageManager()
+            MainService.ctx.startActivity(pm.getLaunchIntentForPackage(packageName.tojstring()))
             return NIL
         }
     }

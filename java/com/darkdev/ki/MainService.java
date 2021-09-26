@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
@@ -39,6 +40,7 @@ public class MainService extends Service {
 
     public static TextToSpeech tts;
     public static CustomAI ai;
+    public static Context ctx;
 
     private Handler handler;
     static Button btn;
@@ -50,6 +52,7 @@ public class MainService extends Service {
         super.onCreate();
         handler = new Handler();
         prepareService();
+        ctx = this;
     }
 
     private void runOnUiThread(Runnable runnable) {
@@ -262,7 +265,7 @@ public class MainService extends Service {
             }
 
             /* 검색 */
-            if (cmd[1].equals("검색")) {
+            if (cmd.length > 1 && cmd[1].equals("검색")) {
                 String _custom = Ki.readData(this, "search_engine");
                 String[] custom;
                 if (_custom == null) custom = new String[]{"", "", ""};
@@ -388,7 +391,7 @@ public class MainService extends Service {
             }
 
             /* 전철 노선도 */
-            if (cmd[0].equals("노선도") || cmd[1].equals("노선도")) {
+            if (cmd[0].equals("노선도") || (cmd.length > 1 && cmd[1].equals("노선도"))) {
                 Intent intent = new Intent(this, SubwayActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
@@ -412,7 +415,7 @@ public class MainService extends Service {
                 }
                 called = true;
             }
-            
+
             /* 맛집 */
             if (cmd[0].equals("맛집")) {
                 say("맛집 정보를 불러오고 있어요");
@@ -424,7 +427,7 @@ public class MainService extends Service {
             }
 
             /* 커스텀 AI */
-            if(Ki.loadSettings(this, "ca_on", false)) {
+            if (Ki.loadSettings(this, "ca_on", false)) {
                 ai.callResponse(msg, called);
             }
 
