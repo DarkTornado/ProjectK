@@ -15,6 +15,7 @@ class CustomAI(val ctx: Context) {
             globals = JsePlatform.standardGlobals()
             globals!!.set("say", CoerceJavaToLua.coerce(LuaApi.Say()))
             globals!!.set("run_app", CoerceJavaToLua.coerce(LuaApi.RunApp()))
+            globals!!.set("open_url", CoerceJavaToLua.coerce(LuaApi.OpenUrl()))
             val chunk: LuaValue = globals!!.load(src)
             chunk.call()
             null
