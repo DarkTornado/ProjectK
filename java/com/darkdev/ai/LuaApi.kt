@@ -29,7 +29,9 @@ class LuaApi {
     internal class OpenUrl : OneArgFunction() {
         override fun call(url: LuaValue): LuaValue {
             val uri = Uri.parse(url.tojstring())
-            MainService.ctx.startActivity(Intent(Intent.ACTION_VIEW, uri))
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            MainService.ctx.startActivity(intent)
             return NIL
         }
     }
