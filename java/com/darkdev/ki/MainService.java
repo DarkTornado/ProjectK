@@ -42,7 +42,7 @@ public class MainService extends Service {
     public static CustomAI ai;
     public static Context ctx;
 
-    private Handler handler;
+    private static Handler handler;
     static Button btn;
     private AppData[] appList;
     private LocationSaver ls;
@@ -55,7 +55,7 @@ public class MainService extends Service {
         ctx = this;
     }
 
-    private void runOnUiThread(Runnable runnable) {
+    public static void runOnUiThread(Runnable runnable) {
         handler.post(runnable);
     }
 
