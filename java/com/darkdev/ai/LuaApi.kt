@@ -6,10 +6,20 @@ import android.net.Uri
 import android.speech.tts.TextToSpeech
 import android.widget.Toast
 import com.darkdev.ki.MainService
+import com.darkdev.ki.Utils
 import org.luaj.vm2.LuaValue
 import org.luaj.vm2.lib.OneArgFunction
 
 class LuaApi {
+
+    internal class Print : OneArgFunction() {
+        override fun call(msg: LuaValue): LuaValue {
+            MainService.runOnUiThread {
+                Toast.makeText(MainService.ctx, msg.tojstring(), Toast.LENGTH_SHORT).show()
+            }
+            return NIL
+        }
+    }
 
     internal class Say : OneArgFunction() {
         override fun call(msg: LuaValue): LuaValue {
@@ -37,12 +47,10 @@ class LuaApi {
         }
     }
 
-    internal class Print : OneArgFunction() {
-        override fun call(msg: LuaValue): LuaValue {
-            MainService.runOnUiThread {
-                Toast.makeText(MainService.ctx, msg.tojstring(), Toast.LENGTH_SHORT).show()
-            }
-            return NIL
+    internal class GetWebContent : OneArgFunction() {
+        override fun call(url: LuaValue): LuaValue {
+            val result = Utils.getWebText(url.tojstring())
+            return LuaValue.valueOf(result)
         }
     }
 }
