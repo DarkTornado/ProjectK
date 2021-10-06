@@ -16,8 +16,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.provider.Settings;
-import android.service.notification.NotificationListenerService;
-import android.service.notification.StatusBarNotification;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
@@ -428,7 +426,9 @@ public class MainService extends Service {
 
             /* 커스텀 AI */
             if (Ki.loadSettings(this, "ca_on", false)) {
-                ai.callResponse(msg, called);
+                final String _msg = msg;
+                final boolean _called = called;
+                new Thread(() -> ai.callResponse(_msg, _called)).start();
             }
 
         } catch (Exception e) {
