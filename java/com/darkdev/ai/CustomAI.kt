@@ -13,10 +13,11 @@ class CustomAI(val ctx: Context) {
     fun reload(src: String): String? {
         return try {
             globals = JsePlatform.standardGlobals()
+            globals!!.set("print", CoerceJavaToLua.coerce(LuaApi.Print()))
             globals!!.set("say", CoerceJavaToLua.coerce(LuaApi.Say()))
             globals!!.set("run_app", CoerceJavaToLua.coerce(LuaApi.RunApp()))
             globals!!.set("open_url", CoerceJavaToLua.coerce(LuaApi.OpenUrl()))
-            globals!!.set("print", CoerceJavaToLua.coerce(LuaApi.Print()))
+            globals!!.set("get_web_content", CoerceJavaToLua.coerce(LuaApi.GetWebContent()))
             val chunk: LuaValue = globals!!.load(src)
             chunk.call()
             null
