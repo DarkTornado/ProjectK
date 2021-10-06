@@ -3,7 +3,6 @@ package com.darkdev.ki;
 import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 
