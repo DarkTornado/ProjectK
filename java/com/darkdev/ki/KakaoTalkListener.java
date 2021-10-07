@@ -26,16 +26,15 @@ public class KakaoTalkListener  extends NotificationListenerService {
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
         super.onNotificationPosted(sbn);
-        if (sbn.getPackageName().equals("com.kakao.talk")) {
-            Notification.WearableExtender wExt = new Notification.WearableExtender(sbn.getNotification());
-            for (Notification.Action act : wExt.getActions()) {
-                if (act.getRemoteInputs() != null && act.getRemoteInputs().length > 0) {
-                    if (act.title.toString().toLowerCase().contains("reply") ||
-                            act.title.toString().toLowerCase().contains("답장")) {
-                        Bundle data = sbn.getNotification().extras;
-                        chat = new KakaoTalk(this, data, act);
-                        sessions.put(chat.room, chat);
-                    }
+        if (!sbn.getPackageName().equals("com.kakao.talk")) return;
+        Notification.WearableExtender wExt = new Notification.WearableExtender(sbn.getNotification());
+        for (Notification.Action act : wExt.getActions()) {
+            if (act.getRemoteInputs() != null && act.getRemoteInputs().length > 0) {
+                if (act.title.toString().toLowerCase().contains("reply") ||
+                        act.title.toString().toLowerCase().contains("답장")) {
+                    Bundle data = sbn.getNotification().extras;
+                    chat = new KakaoTalk(this, data, act);
+                    sessions.put(chat.room, chat);
                 }
             }
         }
