@@ -6,8 +6,11 @@ import android.os.Bundle;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 
+import java.util.HashMap;
+
 public class KakaoTalkListener  extends NotificationListenerService {
 
+    public static HashMap<String, KakaoTalk> sessions = new HashMap<>();
     static KakaoTalk chat;
 
     @Override
@@ -31,6 +34,7 @@ public class KakaoTalkListener  extends NotificationListenerService {
                             act.title.toString().toLowerCase().contains("답장")) {
                         Bundle data = sbn.getNotification().extras;
                         chat = new KakaoTalk(this, data, act);
+                        sessions.put(chat.room, chat);
                     }
                 }
             }
