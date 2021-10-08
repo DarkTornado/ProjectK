@@ -5,10 +5,12 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.speech.tts.TextToSpeech
 import android.widget.Toast
+import com.darkdev.ki.KakaoTalkListener
 import com.darkdev.ki.MainService
 import com.darkdev.ki.Utils
 import org.luaj.vm2.LuaValue
 import org.luaj.vm2.lib.OneArgFunction
+import org.luaj.vm2.lib.TwoArgFunction
 
 class LuaApi {
 
@@ -51,6 +53,15 @@ class LuaApi {
         override fun call(url: LuaValue): LuaValue {
             val result = Utils.getWebText(url.tojstring())
             return LuaValue.valueOf(result)
+        }
+    }
+
+    internal class SendKakaoTalk : TwoArgFunction() {
+        override fun call(room: LuaValue, msg: LuaValue): LuaValue {
+            val chat = KakaoTalkListener.sessions.get(room.tojstring())
+            if (chat == null) return LuaValue.valueOf(false)
+            else chat.reply(msg.tojstring())
+            return LuaValue.valueOf(true)
         }
     }
 }

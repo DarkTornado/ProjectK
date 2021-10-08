@@ -18,6 +18,7 @@ class CustomAI(val ctx: Context) {
             globals!!.set("run_app", CoerceJavaToLua.coerce(LuaApi.RunApp()))
             globals!!.set("open_url", CoerceJavaToLua.coerce(LuaApi.OpenUrl()))
             globals!!.set("get_web_content", CoerceJavaToLua.coerce(LuaApi.GetWebContent()))
+            globals!!.set("send_kakao_talk", CoerceJavaToLua.coerce(LuaApi.SendKakaoTalk()))
             val chunk: LuaValue = globals!!.load(src)
             chunk.call()
             null
