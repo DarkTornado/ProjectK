@@ -5,6 +5,8 @@ import org.luaj.vm2.Globals
 import org.luaj.vm2.LuaValue
 import org.luaj.vm2.lib.jse.CoerceJavaToLua
 import org.luaj.vm2.lib.jse.JsePlatform
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 class CustomAI(val ctx: Context) {
 
@@ -19,6 +21,7 @@ class CustomAI(val ctx: Context) {
             globals!!.set("open_url", CoerceJavaToLua.coerce(LuaApi.OpenUrl()))
             globals!!.set("get_web_content", CoerceJavaToLua.coerce(LuaApi.GetWebContent()))
             globals!!.set("send_kakao_talk", CoerceJavaToLua.coerce(LuaApi.SendKakaoTalk()))
+            globals!!.load(loadApi()).call()
             val chunk: LuaValue = globals!!.load(src)
             chunk.call()
             null
@@ -32,4 +35,22 @@ class CustomAI(val ctx: Context) {
         func.call(LuaValue.valueOf(msg), LuaValue.valueOf(called))
     }
 
+    fun loadApi(): String {
+        return try {
+            val stream = ctx.assets.open("LuaApi.lua")
+            val isr = InputStreamReader(stream)
+            val br = BufferedReader(isr)
+            var str = br.readLine()
+            var line = br.readLine()
+            while (line != null) {
+                str += "\n" + line
+                line = br.readLine()
+            }
+            isr.close()
+            br.close()
+            str
+        } catch (e: Exception) {
+            ""
+        }
+    }
 }
