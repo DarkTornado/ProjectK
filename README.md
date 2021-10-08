@@ -26,7 +26,7 @@
 * [x] 맛집 정보
 * [ ] [Scriptable AI (with luaj)](ScriptableAI.md)
   * [ ] 내부 API 구현
-  * [ ] 문자열 split 구현
+  * [x] 문자열 split 구현
   * [ ] json 문자열 처리 구현
 
 ## 필요 라이브러리
