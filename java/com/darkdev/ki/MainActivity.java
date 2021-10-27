@@ -59,14 +59,9 @@ public class MainActivity extends AppCompatActivity {
         }, Ki.loadSettings(this, "ki_on", false));
         ki.addText("버튼 불투명도 설정", 0, v -> inputAlpha());
         ki.addText("명령어 목록", 1, v -> {
-
+            showCmdList();
         });
         layout.addView(ki);
-        ki.setOnLongClickListener(v -> {
-            Ki.devModeEnabled = !Ki.devModeEnabled;
-            toast("개발자모드: " + Ki.devModeEnabled);
-            return true;
-        });
 
         CardListView si = new CardListView(this);
         si.setTitle("커스텀 AI 설정");
@@ -78,6 +73,9 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, ScriptActivity.class));
         });
         si.addText("API 목록", 2, v -> {
+            Uri uri = Uri.parse("https://github.com/DarkTornado/ProjectK/blob/main/ScriptableAI.md");
+            Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
+            startActivity(intent);
         });
         layout.addView(si);
 
@@ -203,6 +201,25 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    private void showCmdList() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("명령어 목록");
+        dialog.setMessage(" - [앱 이름] 실행\n" +
+                " - [사람이름]한테 전화\n" +
+                " - [검색엔진] 검색 [검색어]\n" +
+                " - 길찾기 [목적지]\n" +
+                " - 날씨 [지역]\n" +
+                " - 블루투스 [동작]\n" +
+                " - 버스 [지역 및 버스 번호]\n" +
+                " - 노선도 [목적지]\n" +
+                " - 카카오톡 읽어줘\n" +
+                " - 카톡 읽어줘\n" +
+                " - 카카오톡 답장 [내용]\n" +
+                " - 카톡 답장 [내용]\n" +
+                " - 맛집 [위치]\n");
+        dialog.setNegativeButton("닫기", null);
+        dialog.show();
+    }
 
     private boolean checkPermission() {
         String[] permissions = {
