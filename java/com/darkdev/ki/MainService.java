@@ -20,6 +20,7 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -156,19 +157,13 @@ public class MainService extends Service {
                 }
 
                 @Override
-                public void onBeginningOfSpeech() {
-
-                }
+                public void onBeginningOfSpeech() {}
 
                 @Override
-                public void onRmsChanged(float rmsdB) {
-
-                }
+                public void onRmsChanged(float rmsdB) {}
 
                 @Override
-                public void onBufferReceived(byte[] buffer) {
-
-                }
+                public void onBufferReceived(byte[] buffer) {}
 
                 @Override
                 public void onEndOfSpeech() {
@@ -299,18 +294,19 @@ public class MainService extends Service {
             /* 길찾기 */
             if (cmd[0].equals("길찾기")) {
                 if (Ki.devModeEnabled) toast(ls.loc + "\n" + ls.lat + ", " + ls.lon);
-                LocationSaver dest = LocationSaver.createWithAddress(this, data);
+                final LocationSaver dest = LocationSaver.createWithAddress(this, data);
                 if (dest == null) {
                     say("목적지를 찾을 수 없어요.");
                 } else {
-                    String url = "https://m.map.naver.com/directions/#/publicTransit/list/" +
-                            "현재%20위치," + ls.lon + "," + ls.lat + "," + ls.lon + "," + ls.lat + ",false,/" +
-                            "" + data + "," + dest.lon + "," + dest.lat + "," + dest.lon + "," + dest.lat + ",false,/0";
-                    Intent intent = new Intent(this, WebActivity.class);
-                    intent.setData(Uri.parse(url));
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    say("길찾기 결과를 띄우고 있어요.");
+                    new Thread(() -> {
+                        String route = Utils.findRoute(ls, dest, data);
+                        Intent intent = new Intent(this, RouteActivity.class);
+                        intent.putExtra("dest", data);
+                        intent.putExtra("route", route);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        say("길찾기 결과를 띄우고 있어요.");
+                    }).start();
                 }
                 called = true;
             }

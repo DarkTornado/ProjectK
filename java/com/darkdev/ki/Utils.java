@@ -17,14 +17,18 @@ import android.provider.ContactsContract;
 import android.util.Pair;
 import android.widget.Toast;
 
+import com.darktornado.library.SimpleRequester;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.List;
 
 public class Utils {
@@ -153,6 +157,21 @@ public class Utils {
             //toast(e.toString());
         }
         return null;
+    }
+
+    public static String findRoute(LocationSaver start, LocationSaver end, String dest) {
+        try {
+            return SimpleRequester.create("https://pt.map.naver.com/api/pubtrans-search")
+                    .data("phase", "real")
+                    .data("mode", "")
+                    .data("departureTime", "")
+                    .data("departure", URLEncoder.encode(URLEncoder.encode(start.lon + "," + start.lat + ",name=Start", "UTF-8"), "UTF-8"))
+                    .data("arrival", URLEncoder.encode(URLEncoder.encode(end.lon + "," + end.lat + ",name=" + dest, "UTF-8"), "UTF-8"))
+                    .execute().body;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return e.toString();
+        }
     }
 
 }

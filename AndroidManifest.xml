@@ -54,6 +54,9 @@
         <activity android:name=".FoodActivity"
             android:label="Ki - 맛집 정보"
             android:configChanges="orientation|screenSize" />
+        <activity android:name=".RouteActivity"
+            android:label="Ki - 길찾기"
+            android:configChanges="orientation|screenSize" />
 
         <activity android:name="com.darkdev.ai.ScriptActivity"
             android:label="Scriptable AI"
