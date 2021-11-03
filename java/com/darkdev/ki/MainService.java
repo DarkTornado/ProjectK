@@ -303,6 +303,8 @@ public class MainService extends Service {
                         Intent intent = new Intent(this, RouteActivity.class);
                         intent.putExtra("dest", data);
                         intent.putExtra("route", route);
+                        intent.putExtra("start", ls);
+                        intent.putExtra("end", dest);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                         say("길찾기 결과를 띄우고 있어요.");

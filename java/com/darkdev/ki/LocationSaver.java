@@ -8,9 +8,11 @@ import android.location.Geocoder;
 import android.location.LocationListener;
 import android.location.LocationManager;
 
+import java.io.Serializable;
+
 import androidx.core.app.ActivityCompat;
 
-public class LocationSaver {
+public class LocationSaver implements Serializable {
     public double lat, lon;
     public String loc;
 

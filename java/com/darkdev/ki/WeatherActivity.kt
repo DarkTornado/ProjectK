@@ -21,16 +21,16 @@ class WeatherActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         val web = WebView(this)
-            web.loadUrl("file:///android_asset/weather.html")
-            web.settings.javaScriptEnabled = true
-            web.webChromeClient = WebChromeClient()
-            web.webViewClient = object : WebViewClient() {
-                override fun onPageFinished(view: WebView, url: String) {
-                    view.loadUrl("javascript:applyWeatherInfo('$data', '$pos')")
-                    super.onPageFinished(view, url)
-                }
+        web.loadUrl("file:///android_asset/weather.html")
+        web.settings.javaScriptEnabled = true
+        web.webChromeClient = WebChromeClient()
+        web.webViewClient = object : WebViewClient() {
+            override fun onPageFinished(view: WebView, url: String) {
+                view.loadUrl("javascript:applyWeatherInfo('$data', '$pos')")
+                super.onPageFinished(view, url)
             }
-            web.layoutParams = LinearLayout.LayoutParams(-1, -1)
+        }
+        web.layoutParams = LinearLayout.LayoutParams(-1, -1)
 
         setContentView(web)
     }

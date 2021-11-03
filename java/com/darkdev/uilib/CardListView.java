@@ -12,9 +12,9 @@ import androidx.core.view.ViewCompat;
 
 public class CardListView extends LinearLayout {
 
-    private Context ctx;
-    private LinearLayout layout;
-    private int pad = dip2px(10);
+    private final Context ctx;
+    private final LinearLayout layout;
+    private final int pad = dip2px(10);
 
     public CardListView(Context context) {
         super(context);

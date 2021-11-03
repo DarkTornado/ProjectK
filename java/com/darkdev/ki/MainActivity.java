@@ -58,9 +58,7 @@ public class MainActivity extends AppCompatActivity {
             Ki.saveSettings(this, "ki_on", isChecked);
         }, Ki.loadSettings(this, "ki_on", false));
         ki.addText("버튼 불투명도 설정", 0, v -> inputAlpha());
-        ki.addText("명령어 목록", 1, v -> {
-            showCmdList();
-        });
+        ki.addText("명령어 목록", 1, v -> showCmdList());
         layout.addView(ki);
 
         CardListView si = new CardListView(this);
@@ -82,15 +80,14 @@ public class MainActivity extends AppCompatActivity {
         CardListView misc = new CardListView(this);
         misc.setTitle("기타 기능 & 설정");
         misc.addText("검색 엔진 설정", 0, v -> searchEngineSettings());
-        misc.addText("앱 정보", 0, v -> toast("test"));
         misc.addText("깃허브", 0, v -> {
             Uri uri = Uri.parse("https://github.com/DarkTornado/ProjectK");
             Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
             startActivity(intent);
             toast("깃허브로 이동하고 있어요...");
         });
-        misc.addText("라이선스", 0, v -> toast("test"));
-        misc.addText("오픈 소스 라이선스", 0, v -> toast("test"));
+        misc.addText("라이선스", 0, v -> startActivity(new Intent(this, LicenseActivity.class)));
+        misc.addText("오픈 소스 라이선스", 0, v -> startActivity(new Intent(this, OpenLicenseActivity.class)));
         layout.addView(misc);
 
         int pad = dip2px(16);
@@ -216,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
                 " - 카톡 읽어줘\n" +
                 " - 카카오톡 답장 [내용]\n" +
                 " - 카톡 답장 [내용]\n" +
-                " - 맛집 [위치]\n");
+                " - 맛집 [위치]");
         dialog.setNegativeButton("닫기", null);
         dialog.show();
     }
@@ -328,12 +325,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void toast(final String msg) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-            }
-        });
+        runOnUiThread(() -> Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show());
     }
 
     public int dip2px(int dips) {
