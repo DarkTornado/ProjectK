@@ -174,4 +174,21 @@ public class Utils {
         }
     }
 
+    public static String readAsset(Context ctx, String path) {
+        try {
+            InputStreamReader isr = new InputStreamReader(ctx.getAssets().open(path));
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder str = new StringBuilder(br.readLine());
+            String line = "";
+            while ((line = br.readLine()) != null) {
+                str.append("\n").append(line);
+            }
+            isr.close();
+            br.close();
+            return str.toString();
+        } catch (Exception e) {
+            return "Failed to load License";
+        }
+    }
+
 }

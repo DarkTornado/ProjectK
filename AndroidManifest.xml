@@ -57,6 +57,12 @@
         <activity android:name=".RouteActivity"
             android:label="Ki - 길찾기"
             android:configChanges="orientation|screenSize" />
+        <activity android:name=".LicenseActivity"
+            android:label="Ki 라이선스 정보"
+            android:configChanges="orientation|screenSize" />
+        <activity android:name=".OpenLicenseActivity"
+            android:label="오픈소스 라이선스 정보"
+            android:configChanges="orientation|screenSize" />
 
         <activity android:name="com.darkdev.ai.ScriptActivity"
             android:label="Scriptable AI"
