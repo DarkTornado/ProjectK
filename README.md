@@ -25,10 +25,10 @@
 * [x] 수신된 카카오톡 내용 읽기
 * [x] 카카오톡 메시지가 수신된 채팅방으로 응답 전송
 * [x] 맛집 정보
-* [ ] [Scriptable AI (with luaj)](ScriptableAI.md)
+* [x] [Scriptable AI (with luaj)](ScriptableAI.md)
   * [x] 내부 API 구현
   * [x] 문자열 split 구현
-  * [ ] json 문자열 처리 구현
+  * [x] json 문자열 처리 구현
 
 ## 필요 라이브러리
 * [jsoup](https://jsoup.org/) - MIT License
