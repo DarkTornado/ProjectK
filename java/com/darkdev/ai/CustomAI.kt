@@ -31,6 +31,7 @@ class CustomAI(val ctx: Context) {
     }
 
     fun callResponse(msg: String, called: Boolean) {
+        if (globals == null) return
         val func = globals!!["chatHook"]
         func.call(LuaValue.valueOf(msg), LuaValue.valueOf(called))
     }
