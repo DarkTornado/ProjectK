@@ -12,7 +12,7 @@ public class Ki {
     public static final int DEFAULT_ALPHA = 90;
     public static final String WEATHER_API_URL = "안알랴줌";
 
-    public static boolean devModeEnabled = true;
+    public static boolean devModeEnabled = false;
 
     public static void saveData(Context ctx, String name, String value) {
         SharedPreferences sp = ctx.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
