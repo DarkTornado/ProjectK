@@ -57,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
             toast("케이아이가 " + (!isChecked ? "비" : "") + "활성화되었어요.");
             Ki.saveSettings(this, "ki_on", isChecked);
         }, Ki.loadSettings(this, "ki_on", false));
-        ki.addText("버튼 불투명도 설정", 0, v -> inputAlpha());
-        ki.addText("명령어 목록", 1, v -> showCmdList());
+        ki.addText("버튼 불투명도 설정", 1, v -> inputAlpha());
+        ki.addText("명령어 목록", 2, v -> showCmdList());
         layout.addView(ki);
 
         CardListView si = new CardListView(this);
@@ -80,14 +80,14 @@ public class MainActivity extends AppCompatActivity {
         CardListView misc = new CardListView(this);
         misc.setTitle("기타 기능 & 설정");
         misc.addText("검색 엔진 설정", 0, v -> searchEngineSettings());
-        misc.addText("깃허브", 0, v -> {
+        misc.addText("깃허브", 1, v -> {
             Uri uri = Uri.parse("https://github.com/DarkTornado/ProjectK");
             Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
             startActivity(intent);
             toast("깃허브로 이동하고 있어요...");
         });
-        misc.addText("라이선스", 0, v -> startActivity(new Intent(this, LicenseActivity.class)));
-        misc.addText("오픈 소스 라이선스", 0, v -> startActivity(new Intent(this, OpenLicenseActivity.class)));
+        misc.addText("라이선스", 2, v -> startActivity(new Intent(this, LicenseActivity.class)));
+        misc.addText("오픈 소스 라이선스", 3, v -> startActivity(new Intent(this, OpenLicenseActivity.class)));
         layout.addView(misc);
 
         int pad = dip2px(16);
