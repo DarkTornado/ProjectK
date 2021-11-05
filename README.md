@@ -34,6 +34,9 @@
 * [jsoup](https://jsoup.org/) - MIT License
 * [luaj](http://www.luaj.org/luaj/3.0/README.html) - MIT License
 
+## 기타 참고 사항
+* 빌드할 때 `Target API` 버전을 29 이하로 설정해주세요.
+
 ## 관련 레포지토리
 * [Project Ki Back-End](https://github.com/DarkTornado/ProjectK-BackEnd) - Project K에서 사용하는 Rest API 등 구현
 

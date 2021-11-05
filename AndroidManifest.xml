@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <queries>
@@ -70,13 +71,11 @@
 
         <service
             android:name=".MainService"
-            android:label="케이아이"
-            android:foregroundServiceType="location|microphone" />
+            android:label="케이아이"/>
         <service
             android:name=".KakaoTalkListener"
             android:label="케이아이"
-            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
-            android:foregroundServiceType="location|microphone" >
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
