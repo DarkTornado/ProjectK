@@ -33,9 +33,9 @@ import java.util.List;
 
 public class Utils {
 
-    public static Notification.Builder createNotifation(Context ctx, String channel, String name) {
+    public static Notification.Builder createNotification(Context ctx, String channel, String name) {
         if (Build.VERSION.SDK_INT < 26) return new Notification.Builder(ctx);
-        NotificationChannel nc = new NotificationChannel(channel, name, NotificationManager.IMPORTANCE_LOW);
+        NotificationChannel nc = new NotificationChannel(channel, name, NotificationManager.IMPORTANCE_DEFAULT);
         NotificationManager nm = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
         if (nm != null) nm.createNotificationChannel(nc);
         return new Notification.Builder(ctx, channel);

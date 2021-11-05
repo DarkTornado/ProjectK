@@ -74,7 +74,7 @@ public class MainService extends Service {
     }
 
     private void prepareService() {
-        Notification.Builder noti = Utils.createNotifation(this, Ki.NOTI_MAIN_CHANNEL, "Ki Service");
+        Notification.Builder noti = Utils.createNotification(this, Ki.NOTI_MAIN_CHANNEL, "Ki Service");
         noti.setSmallIcon(R.mipmap.ic_launcher);
         noti.setContentTitle("Project Ki");
         noti.setContentText("케이아이가 실행중이에요...");
