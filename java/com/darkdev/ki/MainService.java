@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.darkdev.ai.CustomAI;
+import com.darktornado.library.Josa;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -252,7 +253,7 @@ public class MainService extends Service {
                             break;
                         }
                     }
-                    if (!called2) say("" + name + "(이)라는 이름으로 저장된 전화번호가 없어요.");
+                    if (!called2) say("" + name + Josa.getJosa(name, Josa.TYPE_이) + "라는 이름으로 저장된 전화번호가 없어요.");
                 }
                 called = true;
             }
@@ -402,12 +403,11 @@ public class MainService extends Service {
                     if (chat == null) {
                         say("케이아이가 실행된 이후에 수신된 카카오톡 메시지가 없어요.");
                     } else {
-                        if (chat.isGroupChat) say(chat.sender + "(이)가 " + chat.msg + "(이)라고 보냈어요.");
-                        say(chat.room + "에서 " + chat.sender + "(이)가 " + chat.msg + "(이)라고 보냈어요.");
+                        say((chat.isGroupChat ? chat.room + "에서 " : "") + chat.sender + Josa.getJosa(chat.sender, Josa.TYPE_이가) + " " + chat.msg + Josa.getJosa(chat.msg, Josa.TYPE_이) + "라고 보냈어요.");
                     }
                 } else if (cmd[1].equals("답장")) {
                     chat.reply(data2);
-                    say(chat.room + "(으)로 " + data2 + "(이)라고 답장을 보냈어요");
+                    say(chat.room + "(으)로 " + data2 + Josa.getJosa(data2, Josa.TYPE_이) + "(이)라고 답장을 보냈어요");
                 }
                 called = true;
             }
