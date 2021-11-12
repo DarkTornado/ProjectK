@@ -407,7 +407,7 @@ public class MainService extends Service {
                     }
                 } else if (cmd[1].equals("답장")) {
                     chat.reply(data2);
-                    say(chat.room + "(으)로 " + data2 + Josa.getJosa(data2, Josa.TYPE_이) + "(이)라고 답장을 보냈어요");
+                    say(chat.room + Josa.getJosa(chat.room, Josa.TYPE_으) + "로 " + data2 + Josa.getJosa(data2, Josa.TYPE_이) + "라고 답장을 보냈어요");
                 }
                 called = true;
             }
