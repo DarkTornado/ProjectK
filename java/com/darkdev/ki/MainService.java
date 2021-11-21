@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.StrictMode;
 import android.provider.Settings;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
@@ -30,6 +31,9 @@ import android.widget.Toast;
 
 import com.darkdev.ai.CustomAI;
 import com.darktornado.library.Josa;
+import com.darktornado.library.SimpleRequester;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -419,6 +423,15 @@ public class MainService extends Service {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("input", data);
                 startActivity(intent);
+                called = true;
+            }
+
+            /* 코로나 실시간 확진 정보 */
+            if (cmd[0].equals("코로나")) {
+                StrictMode.enableDefaults();
+                String count = new JSONObject(SimpleRequester.create("https://apiv2.corona-live.com/domestic-init.json")
+                        .execute().body).getJSONObject("statsLive").getString("today");
+                say("현재 오늘 실시간 추가 확진자 수는 " + count + "명입니다.");
                 called = true;
             }
 
