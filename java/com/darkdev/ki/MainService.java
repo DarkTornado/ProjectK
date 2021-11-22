@@ -421,7 +421,7 @@ public class MainService extends Service {
                 say("맛집 정보를 불러오고 있어요");
                 Intent intent = new Intent(this, FoodActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("input", data);
+                intent.putExtra("input", cmd.length == 1 ? ls.loc : data);
                 startActivity(intent);
                 called = true;
             }
