@@ -32,6 +32,7 @@
   * [x] json 문자열 처리 구현
 
 ## 필요 라이브러리
+* gradle 등에 추가하거나, .jar 파일을 받아서 직접 넣어줘야 하는 라이브러리들입니다.
 * [jsoup](https://jsoup.org/) - MIT License
 * [luaj](http://www.luaj.org/luaj/3.0/README.html) - MIT License
 
