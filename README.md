@@ -36,6 +36,13 @@
 * [jsoup](https://jsoup.org/) - MIT License
 * [luaj](http://www.luaj.org/luaj/3.0/README.html) - MIT License
 
+## 사용 라이브러리
+* jsoup
+* luaj
+* SimpleRequester
+* LicenseView
+* Josa.java
+
 ## 라이선스
 
 * [GPL 3.0](LICENSE)
