@@ -1,6 +1,6 @@
 # Project Ki
 
-© 2021 Dark Tornado, All rights reserved.
+© 2021-2022 Dark Tornado, All rights reserved.
 
 * `Ki`는 `케이아이`라고 읽어요.
 * 화면 최상단에서 항상 대기중인 버튼을 누르면 실행되는 음성인식을 통해 여러가지 동작을 수행할 수 있어요.
