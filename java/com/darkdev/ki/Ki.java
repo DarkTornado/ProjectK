@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class Ki {
-    public static final String COPYRIGHT_YEAR = "2021";
+    public static final String COPYRIGHT_YEAR = "2021-2022";
     public static final String COPYRIGHT_HOLDER = "Dark Tornado";
     public static final String NOTI_MAIN_CHANNEL = "ki.main.channel";
     public static final int NOTI_ID_MAIN_SERVICE = 1;
