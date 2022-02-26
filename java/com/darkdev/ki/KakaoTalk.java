@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.app.RemoteInput;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 
 public class KakaoTalk {
@@ -20,11 +19,11 @@ public class KakaoTalk {
         this.act = act;
         sender = data.getString("android.title");
         msg = data.getString("android.text");
-        room = data.getString(Build.VERSION.SDK_INT > 23 ? "android.summaryText" : "android.subText");
+        room = data.getString("android.subText");
+        if (room == null) room = data.getString("android.summaryText");
         isGroupChat = room != null;
         if (room == null) room = sender;
     }
-
 
     public void reply(String value) {
         Intent sendIntent = new Intent();
