@@ -19,8 +19,11 @@ public class KakaoTalk {
         this.act = act;
         sender = data.getString("android.title");
         msg = data.getString("android.text");
+
+        /* 간단하게 알림 구조 다르게 나오는거 대응 완료 */
         room = data.getString("android.subText");
         if (room == null) room = data.getString("android.summaryText");
+
         isGroupChat = room != null;
         if (room == null) room = sender;
     }
