@@ -8,8 +8,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 public class KakaoTalk {
-    private Context ctx;
-    private Notification.Action act;
+    private final Context ctx;
+    private final Notification.Action act;
 
     String room, msg, sender;
     boolean isGroupChat;
