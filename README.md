@@ -40,7 +40,7 @@
 * jsoup
 * luaj
 * [SimpleRequester](https://github.com/DarkTornado/SimpleRequester)
-* LicenseView
+* [LicenseView](https://github.com/DarkTornado/LicenseView)
 * [Josa.java](https://github.com/DarkTornado/Josa.java)
 
 ## 라이선스
