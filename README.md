@@ -39,8 +39,8 @@
 ## 사용 라이브러리
 * jsoup
 * luaj
-* [SimpleRequester](https://github.com/DarkTornado/SimpleRequester)
-* [LicenseView](https://github.com/DarkTornado/LicenseView)
+* [SimpleRequester](https://github.com/DarkTornado/SimpleRequester) - BSD 3-Clause License
+* [LicenseView](https://github.com/DarkTornado/LicenseView) - BSD 3-Clause License
 * [Josa.java](https://github.com/DarkTornado/Josa.java)
 
 ## 라이선스
