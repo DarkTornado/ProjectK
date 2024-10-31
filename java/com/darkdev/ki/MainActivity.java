@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
                 " - 날씨 [지역]\n" +
                 " - 블루투스 [동작]\n" +
                 " - 버스 [지역 및 버스 번호]\n" +
-                " - 노선도 [목적지]\n" +
+                " - 노선도\n" +
                 " - 카카오톡 읽어줘\n" +
                 " - 카톡 읽어줘\n" +
                 " - 카카오톡 답장 [내용]\n" +
